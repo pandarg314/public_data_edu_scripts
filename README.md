@@ -1,6 +1,6 @@
 # README — Dato público para la alfabetización matemática crítica
 
-Repositorio inspirado y conectado con el TFM **«Propuesta didáctica de alfabetización matemática crítica mediante análisis de datos públicos en 4º ESO»** (UDIMA, 2026): scripts y materiales para facilitar al profesorado la descarga, limpieza y preparación de **dato público** para el aula.
+Repositorio inspirado y conectado con el TFM **XXXXX** (UDIMA, 2026): scripts y materiales para facilitar al profesorado la descarga, limpieza y preparación de **dato público** para el aula.
 
 ## Índice
 1. [Introducción](#1-introducción)
