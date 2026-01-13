@@ -40,6 +40,7 @@ Un ejemplo efectivo es trabajar con **series temporales**, ya que su orden crono
 
 **Figura F2.** Serie temporal del Índice de Precios de los Alimentos de la FAO reconstruida y actualizada mediante scripts a partir de la fuente oficial, como continuación del trabajo iniciado con la noticia. Al disponer del dato en formato tratable (CSV), el profesorado y el alumnado ganan control sobre las actualizaciones y pueden operar con la serie (limpieza, recortes temporales, comparaciones, etc.), contrastando de forma fundamentada las hipótesis formuladas en la Figura F1 y revisando la interpretación a la luz del dato completo.
 
+Las anteriores figuras presenta una interacción con un indicador de precio de alimentos de la FAO. El código de descarga se encuentra en /scripts/
 
 
 Estos trabajos son especialmente adecuados para crear grupos de investigación (favoreciendo el aprendizaje) y pueden involucrar, con tareas apropiadas, a la familia del alumnado de una manera emocional y positiva. Además, la dimensión visual de estos datos suele ser relativamente asequible de explicar verbalmente, aumentando canales de transmisión (visual + verbal).
