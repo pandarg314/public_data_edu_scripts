@@ -136,16 +136,16 @@ La propuesta se apoya en una idea fuerte:
 - Blender ejecuta y renderiza.
 
 <p align="center">
-  <img src="docs/figures/bloomberg.png" width="650">
+  <img src="docs/figures/MCP.png" width="650">
 </p>
 
-**Figura F1.** Captura de una noticia en la que aparece una serie temporal (Índice de Precios de los Alimentos de la FAO) utilizada como disparador didáctico. A partir del gráfico periodístico se plantea una primera lectura e hipótesis interpretativa —por ejemplo, que el último pico pueda estar relacionado con el impacto de la guerra de Ucrania en los mercados—, subrayando que se trata de una conjetura inicial que debe verificarse con datos y contexto antes de convertirla en conclusión.
+**Figura M1.** Esquema cliente-servidor MCP
 
 <p align="center">
-  <img src="docs/figures/FAO.png" width="650">
+  <img src="docs/figures/MCP_LLM.png" width="650">
 </p>
 
-**Figura F2.** Serie temporal del Índice de Precios de los Alimentos de la FAO reconstruida y actualizada mediante scripts a partir de la fuente oficial, como continuación del trabajo iniciado con la noticia. Al disponer del dato en formato tratable (CSV), el profesorado y el alumnado ganan control sobre las actualizaciones y pueden operar con la serie (limpieza, recortes temporales, comparaciones, etc.), contrastando de forma fundamentada las hipótesis formuladas en la Figura F1 y revisando la interpretación a la luz del dato completo.
+**Figura M2.** Esquema del flujo del LLM en MCP
 
 ### 4.2 Desmos vs MCP+Blender: determinismo, latencia y “cuasi-estocasticidad”
 Comparativa didácticamente útil:
@@ -176,9 +176,17 @@ Aquí el foco no es “que Blender haga cosas bonitas”, sino forzar **competen
   - sintácticos (llamada mal formada),
   - interpretativos (ambigüedad del prompt).
 
-> **Figura V1 — Ejemplo de prompt y resultado (insertar aquí).**  
-> **[INSERTAR FIGURA: V1]** Captura “prompt → objeto → corte → sección”.  
-> Ruta sugerida: `docs/figuras/V1_prompt_a_seccion.png`
+<p align="center">
+  <img src="docs/figures/mcp_blender_interesection_step_1.png" width="650">
+</p>
+<p align="center">
+  <img src="docs/figures/mcp_blender_interesection_step_2.png" width="650">
+</p>
+<p align="center">
+  <img src="docs/figures/mcp_blender_interesection_step_3.png" width="650">
+</p>
+
+**Figura V1.** Prompts utilizados.
 
 ### 4.4 Secuenciación tipo ABP/ABProb (propuesta orientativa)
 Una secuencia posible (alto rendimiento didáctico):
