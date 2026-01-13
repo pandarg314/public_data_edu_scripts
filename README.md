@@ -135,13 +135,17 @@ La propuesta se apoya en una idea fuerte:
 - El **cliente** (LLM con function calling) traduce instrucciones verbales a llamadas de herramienta.
 - Blender ejecuta y renderiza.
 
-> **Figura M1 — Esquema cliente-servidor MCP (insertar aquí).**  
-> **[INSERTAR FIGURA: M1]** “Esquema cliente-servidor MCP”.  
-> Ruta sugerida: `docs/figuras/M1_mcp_cliente_servidor.png`
+<p align="center">
+  <img src="docs/figures/bloomberg.png" width="650">
+</p>
 
-> **Figura M2 — Flujo del LLM en MCP (insertar aquí).**  
-> **[INSERTAR FIGURA: M2]** “Esquema del flujo del LLM en MCP”.  
-> Ruta sugerida: `docs/figuras/M2_flujo_llm_mcp.png`
+**Figura F1.** Captura de una noticia en la que aparece una serie temporal (Índice de Precios de los Alimentos de la FAO) utilizada como disparador didáctico. A partir del gráfico periodístico se plantea una primera lectura e hipótesis interpretativa —por ejemplo, que el último pico pueda estar relacionado con el impacto de la guerra de Ucrania en los mercados—, subrayando que se trata de una conjetura inicial que debe verificarse con datos y contexto antes de convertirla en conclusión.
+
+<p align="center">
+  <img src="docs/figures/FAO.png" width="650">
+</p>
+
+**Figura F2.** Serie temporal del Índice de Precios de los Alimentos de la FAO reconstruida y actualizada mediante scripts a partir de la fuente oficial, como continuación del trabajo iniciado con la noticia. Al disponer del dato en formato tratable (CSV), el profesorado y el alumnado ganan control sobre las actualizaciones y pueden operar con la serie (limpieza, recortes temporales, comparaciones, etc.), contrastando de forma fundamentada las hipótesis formuladas en la Figura F1 y revisando la interpretación a la luz del dato completo.
 
 ### 4.2 Desmos vs MCP+Blender: determinismo, latencia y “cuasi-estocasticidad”
 Comparativa didácticamente útil:
