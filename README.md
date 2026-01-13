@@ -28,22 +28,19 @@ El modelado matemático debe enseñarse con un enfoque crítico, animando a los 
 ### Ejemplo motivador con series temporales (lectura crítica y visual)
 Un ejemplo efectivo es trabajar con **series temporales**, ya que su orden cronológico natural las hace especialmente intuitivas para la visualización y el análisis inicial. Por inspección visual (y con tareas bien guiadas), el alumnado puede reconocer **tendencias, estacionalidades, ciclos, ruido, anomalías, estabilidad/volatilidad, cambios de nivel y periodicidades**, entre otros elementos.
 
-> **Figura A1 — Serie temporal contextual (insertar aquí).**  
-
 <p align="center">
   <img src="docs/figures/bloomberg.png" width="650">
 </p>
 
-**Figura F1.** Figura F1. Serie temporal del Índice de Precios de los Alimentos de la FAO reconstruida y actualizada mediante scripts a partir de la fuente oficial, como continuación del trabajo iniciado con la noticia. Al disponer del dato en formato tratable (CSV), el profesorado y el alumnado ganan control sobre las actualizaciones y pueden operar con la serie (limpieza, recortes temporales, comparaciones, etc.), contrastando de forma fundamentada las hipótesis formuladas en la Figura F1 y revisando la interpretación a la luz del dato completo.
+**Figura F1.** Captura de una noticia en la que aparece una serie temporal (Índice de Precios de los Alimentos de la FAO) utilizada como disparador didáctico en la práctica AEC1. A partir del gráfico periodístico se plantea una primera lectura e hipótesis interpretativa —por ejemplo, que el último pico pueda estar relacionado con el impacto de la guerra de Ucrania en los mercados—, subrayando que se trata de una conjetura inicial que debe verificarse con datos y contexto antes de convertirla en conclusión.
 
 <p align="center">
   <img src="docs/figures/FAO.png" width="650">
 </p>
 
-**Figura F2** Ejemplo de serie temporal descargada desde Google Trends.
-Los valores están normalizados respecto al volumen total de búsquedas.
+**Figura F2.** Serie temporal del Índice de Precios de los Alimentos de la FAO reconstruida y actualizada mediante scripts a partir de la fuente oficial, como continuación del trabajo iniciado con la noticia. Al disponer del dato en formato tratable (CSV), el profesorado y el alumnado ganan control sobre las actualizaciones y pueden operar con la serie (limpieza, recortes temporales, comparaciones, etc.), contrastando de forma fundamentada las hipótesis formuladas en la Figura F1 y revisando la interpretación a la luz del dato completo.
 
-> Ruta sugerida: `docs/figuras/A1_serie_temporal.png`
+
 
 Estos trabajos son especialmente adecuados para crear grupos de investigación (favoreciendo el aprendizaje) y pueden involucrar, con tareas apropiadas, a la familia del alumnado de una manera emocional y positiva. Además, la dimensión visual de estos datos suele ser relativamente asequible de explicar verbalmente, aumentando canales de transmisión (visual + verbal).
 
