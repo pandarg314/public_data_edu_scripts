@@ -1,4 +1,16 @@
 # FAO FFPI (XLSX) → descarga, chequeo rápido y gráficos en pantalla
+
+#Otros links de interes
+# 1) web q aloja el dato:
+# https://www.fao.org/worldfoodsituation/foodpricesindex/en/
+
+# 2) un dashboard de fao muy util:
+# https://fpma.fao.org/giews/fpmat4/global/#/dashboard/home
+
+library(rstudioapi)
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd("..")
+
 u <- "https://www.fao.org/media/docs/worldfoodsituationlibraries/default-document-library/food_price_indices_data_jan3.xlsx?sfvrsn=63809b16_99"
 dir.create("datos", showWarnings=FALSE, recursive=TRUE); f <- "datos/fao_ffpi.xlsx"
 download.file(u, f, mode="wb", quiet=TRUE)
