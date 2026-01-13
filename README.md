@@ -34,8 +34,7 @@ Un ejemplo efectivo es trabajar con **series temporales**, ya que su orden crono
   <img src="docs/figures/bloomberg.png" width="650">
 </p>
 
-**Figura F1.** Ejemplo de serie temporal descargada desde Google Trends.
-Los valores están normalizados respecto al volumen total de búsquedas.
+**Figura F1.** Figura F1. Serie temporal del Índice de Precios de los Alimentos de la FAO reconstruida y actualizada mediante scripts a partir de la fuente oficial, como continuación del trabajo iniciado con la noticia. Al disponer del dato en formato tratable (CSV), el profesorado y el alumnado ganan control sobre las actualizaciones y pueden operar con la serie (limpieza, recortes temporales, comparaciones, etc.), contrastando de forma fundamentada las hipótesis formuladas en la Figura F1 y revisando la interpretación a la luz del dato completo.
 
 <p align="center">
   <img src="docs/figures/FAO.png" width="650">
