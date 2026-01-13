@@ -117,7 +117,8 @@ En funciones, se puede modelizar datos con **decaimientos** mediante **funciones
 
 ## 4) MCP+Blender para el sentido espacial
 
-Este apartado añade **verbalización matemática + visualización 3D profesional** como palanca para el **sentido espacial** (y conexiones álgebra-geometría).
+Este apartado añade **verbalización matemática + visualización 3D profesional** como palanca para el **sentido espacial** (y conexiones álgebra-geometría). 
+Utilidad para el noticiario: para el cambio de secciones en el noticiario se pueden hacer transiciones mediante animaciones visuales 3D geométricas. 
 
 La propuesta se apoya en una idea fuerte:
 
@@ -176,18 +177,6 @@ Aquí el foco no es “que Blender haga cosas bonitas”, sino forzar **competen
   - sintácticos (llamada mal formada),
   - interpretativos (ambigüedad del prompt).
 
-<p align="center">
-  <img src="docs/figures/mcp_blender_interesection_step_1.png" width="650">
-</p>
-<p align="center">
-  <img src="docs/figures/mcp_blender_interesection_step_2.png" width="650">
-</p>
-<p align="center">
-  <img src="docs/figures/mcp_blender_interesection_step_3.png" width="650">
-</p>
-
-**Figura V1.** Prompts utilizados.
-
 ### 4.4 Secuenciación tipo ABP/ABProb (propuesta orientativa)
 Una secuencia posible (alto rendimiento didáctico):
 
@@ -201,13 +190,23 @@ Una secuencia posible (alto rendimiento didáctico):
 - Caso estrella: **plano cortando cubo** y discusión de la sección (verificación, propiedades, justificación).
 - Extensiones: toro con 2 o 3 planos (complejidad creciente).
 
-> **Figura G1 — Cubo + plano + intersección (insertar aquí).**  
-> **[INSERTAR FIGURA: G1]** Captura del cubo, el plano y la sección visible.  
-> Ruta sugerida: `docs/figuras/G1_cubo_plano_seccion.png`
+<p align="center">
+  <img src="docs/figures/mcp_blender_interesection_step_1.png" width="650">
+</p>
+<p align="center">
+  <img src="docs/figures/mcp_blender_interesection_step_2.png" width="650">
+</p>
+<p align="center">
+  <img src="docs/figures/mcp_blender_interesection_step_3.png" width="650">
+</p>
 
-> **Figura G2 — Toro con cortes (insertar aquí).**  
-> **[INSERTAR FIGURA: G2]** Intersección de un toro con tres planos (o equivalente).  
-> Ruta sugerida: `docs/figuras/G2_toro_tres_planos.png`
+**Figura G1.** Prompts utilizados en la intersección de un plano con un cubo que da un hexágono. El título de la siguiente sección de noticias podría ir escrito en la interesección.
+
+<p align="center">
+  <img src="docs/figures/interseccion_toro_13.png" width="650">
+</p>
+
+**Figura G2.** Intersección de un toro con tres planos. Fuente: Tim Hunkin, http://www.HunkinsExperiments.com
 
 ### 4.5 Diseño “pre-aula”: métricas y registro (para investigación docente)
 Si se desea medir viabilidad (muy alineado con enfoque crítico y evidencial):
