@@ -4,8 +4,10 @@ dir.create("datos", showWarnings=FALSE, recursive=TRUE); f <- "datos/fao_ffpi.xl
 download.file(u, f, mode="wb", quiet=TRUE)
 
 library(readxl)
-d <- read_excel(f, sheet="Indices_Monthly_Nominal", skip=3)[, 1:7]
-names(d) <- c("date","ffpi","meat","dairy","cereals","oils","sugar"); d$date <- as.Date(d$date)
+d <- suppressMessages(read_excel(f, sheet="Indices_Monthly_Nominal", skip=3))[, 1:7]
+names(d) <- c("date","ffpi","meat","dairy","cereals","oils","sugar");
+
+d$date <- if (inherits(d$date, "Date")) d$date else as.Date(d$date, origin="1899-12-30")
 
 # Resumen del dato (estructura, rango temporal, NAs)
 cat("FAO Food Price Index (monthly nominal)\n",
