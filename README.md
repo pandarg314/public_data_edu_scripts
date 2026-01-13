@@ -29,7 +29,21 @@ El modelado matemático debe enseñarse con un enfoque crítico, animando a los 
 Un ejemplo efectivo es trabajar con **series temporales**, ya que su orden cronológico natural las hace especialmente intuitivas para la visualización y el análisis inicial. Por inspección visual (y con tareas bien guiadas), el alumnado puede reconocer **tendencias, estacionalidades, ciclos, ruido, anomalías, estabilidad/volatilidad, cambios de nivel y periodicidades**, entre otros elementos.
 
 > **Figura A1 — Serie temporal contextual (insertar aquí).**  
-> **[INSERTAR FIGURA: A1]** Captura/imagen de una serie temporal usada como disparador didáctico (p. ej. un índice mensual).  
+
+<p align="center">
+  <img src="docs/figures/bloomberg.png" width="650">
+</p>
+
+**Figura F1.** Ejemplo de serie temporal descargada desde Google Trends.
+Los valores están normalizados respecto al volumen total de búsquedas.
+
+<p align="center">
+  <img src="docs/figures/FAO.png" width="650">
+</p>
+
+**Figura F2** Ejemplo de serie temporal descargada desde Google Trends.
+Los valores están normalizados respecto al volumen total de búsquedas.
+
 > Ruta sugerida: `docs/figuras/A1_serie_temporal.png`
 
 Estos trabajos son especialmente adecuados para crear grupos de investigación (favoreciendo el aprendizaje) y pueden involucrar, con tareas apropiadas, a la familia del alumnado de una manera emocional y positiva. Además, la dimensión visual de estos datos suele ser relativamente asequible de explicar verbalmente, aumentando canales de transmisión (visual + verbal).
