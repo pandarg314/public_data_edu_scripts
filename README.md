@@ -87,7 +87,7 @@ Acceder a datos públicos puede ser difícil para el profesorado por fricción t
 
 ## 3) Data para los sentidos numérico, algebraico, de la medida y socioafectivo
 
-Este repositorio no se limita al sentido estocástico. La idea (coherente con el TFM) es que el **dato público** funcione como **contexto transversal**: al menos una sesión por sentido (según programación), sin “secuestrar” el curso.
+Este repositorio no se limita al sentido estocástico. La idea es que el **dato público** funcione como **contexto transversal**: al menos una sesión por sentido (según programación), sin “secuestrar” el curso.
 
 ### Sentido numérico
 - Porcentajes, tasas, variaciones interanuales, índices.
@@ -117,7 +117,7 @@ En funciones, se puede modelizar datos con **decaimientos** mediante **funciones
 
 ## 4) MCP+Blender para el sentido espacial
 
-Este apartado añade “artillería” que no necesariamente se despliega en el TFM centrado en dato público: **verbalización matemática + visualización 3D profesional** como palanca para el **sentido espacial** (y conexiones álgebra-geometría).
+Este apartado añade **verbalización matemática + visualización 3D profesional** como palanca para el **sentido espacial** (y conexiones álgebra-geometría).
 
 La propuesta se apoya en una idea fuerte:
 
