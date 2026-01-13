@@ -253,9 +253,11 @@ En este repositorio, este tipo de script se trata como:
 1. **Los puntos son relativos:** cada valor está normalizado respecto al volumen de búsquedas (no es “número absoluto de búsquedas”). Por tanto, la serie representa un **índice** y su interpretación debe ser prudente.
 2. **Keywords suficientemente generales:** si una keyword tiene más de una palabra, hay que tener en cuenta que suelen comportarse como **intersecciones** (la restricción aumenta). Al refinar demasiado, el índice puede disminuir y es fácil llegar a series con muchos ceros.
 
-> **Figura T1 — Ejemplo de serie Trends + notas de interpretación (insertar aquí).**  
-> **[INSERTAR FIGURA: T1]** Captura de la serie descargada y anotaciones sobre normalización e intersecciones.  
-> Ruta sugerida: `docs/figuras/T1_trends_ejemplo.png`
+<p align="center">
+  <img src="docs/figures/GT_geogebra_vs_desmos" width="650">
+</p>
+
+**Figura T1.** Captura de Google Trends
 
 ---
 
