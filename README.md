@@ -254,7 +254,7 @@ En este repositorio, este tipo de script se trata como:
 2. **Keywords suficientemente generales:** si una keyword tiene más de una palabra, hay que tener en cuenta que suelen comportarse como **intersecciones** (la restricción aumenta). Al refinar demasiado, el índice puede disminuir y es fácil llegar a series con muchos ceros.
 
 <p align="center">
-  <img src="docs/figures/GT_geogebra_vs_desmos.png" width="650">
+  <img src="docs/figures/GT_geogebraVsDesmos.png" width="650">
 </p>
 
 **Figura T1.** Captura de Google Trends
