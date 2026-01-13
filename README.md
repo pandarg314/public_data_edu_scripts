@@ -52,7 +52,7 @@ La educación matemática que se persigue aquí está fundamentada en el desarro
 
 ## 2) Dato para el sentido estocástico
 
-Este apartado operacionaliza la conexión central con el TFM: **la alfabetización matemática crítica** se implementa de forma prioritaria en el **sentido estocástico**, porque es el vehículo más directo para trabajar lectura crítica de cuantificación pública: indicadores, titulares, gráficos, comparativas, rankings, “evidencias” y afirmaciones sostenidas (o no) por datos.
+Este apartado operacionaliza la conexión central con **la alfabetización matemática crítica** se implementa de forma prioritaria en el **sentido estocástico**, porque es el vehículo más directo para trabajar lectura crítica de cuantificación pública: indicadores, titulares, gráficos, comparativas, rankings, “evidencias” y afirmaciones sostenidas (o no) por datos.
 
 La lógica es clara:
 
