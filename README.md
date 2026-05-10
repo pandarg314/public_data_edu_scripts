@@ -8,6 +8,7 @@ Repositorio inspirado y conectado con el TFM **XXXXX** (UDIMA, 2026): scripts y 
 3. [Data para los sentidos numérico, algebraico, de la medida y socioafectivo](#3-data-para-los-sentidos-numérico-algebraico-de-la-medida-y-socioafectivo)
 4. [MCP+Blender para el sentido espacial](#4-mcpblender-para-el-sentido-espacial)
 5. [Datos descargables directamente desde la web (tipo Google Trends)](#5-datos-descargables-directamente-desde-la-web-tipo-google-trends)
+6. [Exámenes PAU para Matemáticas II](#6-exámenes-pau-para-matemáticas-ii)
 
 ---
 
@@ -18,6 +19,8 @@ El aprendizaje no es exclusivo del alumnado; en un sistema constructivista el pr
 En este marco, el concepto de **alfabetización matemática** emerge como un eje fundamental, vinculado tanto a la educación matemática como a la dimensión emocional de las matemáticas. Su relevancia se amplifica hoy en día gracias al acceso creciente a datos y herramientas tecnológicas.
 
 Este repositorio propone una visión de la educación matemática centrada en un **tratamiento sencillo de datos** como instrumentos para una **alfabetización matemática crítica** del alumnado y un mayor control por parte del profesorado, mediante iniciativas de modelización de datos, exploración de sesgos, etc. (En esta línea, se integran ejemplos de regresión lineal, series temporales y aproximaciones a modelos simples de IA cuando tenga sentido didáctico).
+
+Además, el repositorio amplía su objetivo hacia la preparación específica de **Matemáticas II para la PAU**: recopilar exámenes oficiales, criterios y materiales auxiliares cuando estén disponibles, y usarlos como corpus para diseñar secuencias de clase orientadas a dominar los tipos de ejercicio, los criterios de corrección y las estrategias de resolución más frecuentes.
 
 Los datos se han convertido en un eje central de la sociedad actual (economía, tecnología, política). Por lo tanto, es importante introducir una alfabetización matemática crítica para comprender y cuestionar cómo los datos son recolectados, procesados y utilizados.
 
@@ -258,6 +261,37 @@ En este repositorio, este tipo de script se trata como:
 </p>
 
 **Figura T1.** Captura de Google Trends
+
+---
+
+## 6) Exámenes PAU para Matemáticas II
+
+Se añade una línea de trabajo práctica: construir un repositorio local de exámenes PAU/EvAU de **Matemáticas II** para preparar clases dirigidas a esa prueba. El punto de partida es la página de UC3M con modelos y convocatorias ordinarias/extraordinarias:
+
+https://www.uc3m.es/ss/Satellite/evau/es/TextoMixta/1371318154983/Examenes_de_Matematicas_II
+
+El script inicial es:
+
+```bash
+python3 examenes_pau/scripts/descargar_matematicas.py --dry-run
+python3 examenes_pau/scripts/descargar_matematicas.py
+```
+
+Por defecto descarga los enlaces de exámenes de las dos materias de matemáticas de 2.º de Bachillerato en `examenes_pau/matematicas/`, separadas en `matematicas_ii/` y `matematicas_aplicadas_ccss_ii/`. Dentro de cada materia separa modelos, convocatoria ordinaria y convocatoria extraordinaria, y genera un `manifest.csv`. Si se quieren incluir materiales auxiliares de la página, como criterios generales o calculadoras permitidas, se puede ejecutar:
+
+```bash
+python3 examenes_pau/scripts/descargar_matematicas.py --include-supporting
+```
+
+### Uso didáctico previsto
+
+- Clasificar ejercicios por bloque: análisis, álgebra, geometría, probabilidad/estadística cuando aplique.
+- Detectar patrones de enunciado y recurrencia por convocatorias.
+- Separar entrenamiento técnico, lectura estratégica del enunciado y comunicación de la solución.
+- Comparar respuestas con criterios de corrección para trabajar puntuación parcial y rigor.
+- Diseñar secuencias cortas: diagnóstico, microlección, práctica guiada, práctica tipo examen y corrección comentada.
+
+La meta no es solo acumular PDFs: es transformar el histórico de exámenes en una herramienta de programación de aula, con lecciones ajustadas a los errores frecuentes y a las exigencias reales de la PAU.
 
 ---
 
