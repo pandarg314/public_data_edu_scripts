@@ -45,11 +45,11 @@ Para un sistema cuadrado \(AX=b\):
 
 ## Probabilidad: sucesos y complementarios
 
-- Complementario: \(P(\bar A)=1-P(A)\)
-- Union de dos sucesos: \(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)
-- Si \(A\) y \(B\) son incompatibles: \(P(A\cap B)=0\) y \(P(A\cup B)=P(A)+P(B)\) (Rcda.: dado => en la misma tirada, sacar un 3 , sacar un 5)
-- Ninguno de los dos: \(P(\bar A\cap \bar B)=1-P(A\cup B)\)
-- Solo \(A\): \(P(A\cap \bar B)=P(A)-P(A\cap B)\)
+-  \(P(\bar A)=1-P(A)\)
+- \(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)
+- Si \(A\) y \(B\) son incompatibles (rcda.: dado => en la misma tirada, sacar un 3 , sacar un 5): \(P(A\cap B)=0\) y \(P(A\cup B)=P(A)+P(B)\) 
+-  \(P(\bar A\cap \bar B)=1-P(A\cup B)\)
+-  \(P(\overline{A\cup B}) = P(\overline A\cap \overline B)\)
 - Solo uno de los dos: \(P(A\cap \bar B)+P(B\cap \bar A)=P(A)+P(B)-2P(A\cap B)\)
 - Siempre: \(P(A\cap B)=P(A)+P(B)-P(A\cup B)\)
 - \(A\) y \(B\) independientes: \(P(A\cap B)=P(A)P(B)\)
@@ -57,12 +57,12 @@ Para un sistema cuadrado \(AX=b\):
 ## Tabla Venn para dos sucesos
 
 \[
-\begin{array}{c|c c c c c}
+\begin{array}{c|c c c|c c}
  & B & + & \bar B & = & \text{Total} \\
 \hline
-A & P(A\cap B) & + & P(A\cap \bar B) & \vline\ = & P(A) \\
-+ & + & & + & \vline\ & + \\
-\bar A & P(\bar A\cap B) & + & P(\bar A\cap \bar B) & \vline\ = & P(\bar A) \\
+A & P(A\cap B) & + & P(A\cap \bar B) & = & P(A) \\
++ & + & & + & & + \\
+\bar A & P(\bar A\cap B) & + & P(\bar A\cap \bar B) & = & P(\bar A) \\
 \hline
 = & = & & = & &  \\
 \text{Total} & P(B) & + & P(\bar B) & = & 1
