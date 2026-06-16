@@ -20,6 +20,13 @@ Para un sistema cuadrado \(AX=b\):
 - Modulo: \(\lVert\vec u\rVert=\sqrt{u_1^2+u_2^2+u_3^2}\)
 - Si \(\vec u\cdot\vec v=0\) => vectores perpendiculares
 
+## Geometría Espacios Vectoriales
+
+- Distancia de un punto a un plano. Si \(P(x_0,y_0,z_0)\) y \(\pi: Ax+By+Cz+D=0\), entonces:
+  \[
+  d(P,\pi)=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}
+  \]
+
 ## Paridad de una funcion
 
 - \(f(-x)=f(x)\) => par
