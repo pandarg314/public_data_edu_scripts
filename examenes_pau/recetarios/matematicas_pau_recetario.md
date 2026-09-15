@@ -21,7 +21,7 @@
 Para un sistema cuadrado \(AX=b\):
 
 - Si \(\det(A)\ne 0\) => SCD
-- Si \(\det(A)=0\): si \(\operatorname{rg}(A)=\operatorname{rg}(A\mid b)\) => SCI; si no, SI
+- Si \(\det(A)=0\): por Gauss, si \(\operatorname{rg}(A)=\operatorname{rg}(A\mid b)\) => SCI; si no, SI
 
 ### Rango por menores
 
@@ -39,6 +39,11 @@ Para un sistema cuadrado \(AX=b\):
 - Producto escalar en 3D: \(\vec u\cdot\vec v=u_1v_1+u_2v_2+u_3v_3\)
 - Modulo: \(\lVert\vec u\rVert=\sqrt{u_1^2+u_2^2+u_3^2}\)
 - Si \(\vec u\cdot\vec v=0\) => vectores perpendiculares
+
+### Intersección de recta y plano
+
+- Pasar la recta a ecuación vectorial: \(r\equiv (x,y,z)=P+\lambda\vec v\).
+- Sustituir \(x(\lambda),y(\lambda),z(\lambda)\) en el plano y resolver \(\lambda\): una solución da el punto de corte; ninguna, recta paralela; una identidad, recta contenida.
 
 ### Distancia de un punto a un plano
 
@@ -126,11 +131,21 @@ A & P(A\cap B) & + & P(A\cap \bar B) & = & P(A) \\
 
 ### Binomial
 
-- Se usa cuando hay \(n\) repeticiones independientes, dos resultados posibles y probabilidad de exito constante \(p\)
-- Si \(X\sim B(n,p)\): \(P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}\)
-- Como mucho \(r\) exitos: \(P(X\le r)=\sum_{k=0}^r \binom{n}{k}p^k(1-p)^{n-k}\)
-- Al menos \(r\) exitos: \(P(X\ge r)=1-P(X\le r-1)\)
-- Media y desviacion tipica: \(\mu=np\), \(\sigma=\sqrt{np(1-p)}\)
+- Se usa cuando hay \(n\) repeticiones independientes, dos resultados posibles y probabilidad de éxito constante \(p\)
+- Sea \(X\) la variable aleatoria que cuenta el número de éxitos obtenidos en las \(n\) repeticiones. Entonces \(X\sim B(n,p)\) y \(P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}\)
+- Como mucho \(r\) éxitos: \(P(X\le r)=\sum_{k=0}^r \binom{n}{k}p^k(1-p)^{n-k}\)
+- Al menos \(r\) éxitos: \(P(X\ge r)=1-P(X\le r-1)\)
+- Media y desviación típica: \(\mu=np\), \(\sigma=\sqrt{np(1-p)}\)
+
+#### Ejemplo canónico
+
+Imagina `n` lanzamientos independientes de una moneda y codifica cada uno como `1` (éxito) o `0` (fracaso). "Éxito" solo significa el resultado que se decide contar.
+
+- `n`: número de lanzamientos.
+- `p` minúscula: probabilidad de éxito en un lanzamiento.
+- `X`: variable aleatoria igual a la **SUMA** de los `n` resultados `0/1`; cuenta los éxitos.
+- `k`: un valor concreto que puede tomar `X`, desde `0` hasta `n`.
+- `{X = k}`: suceso "obtener exactamente `k` éxitos"; `P(X = k)` es su probabilidad.
 
 ### Normal
 
