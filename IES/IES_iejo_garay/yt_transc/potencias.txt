@@ -1,0 +1,202 @@
+https://www.youtube.com/watch?v=yc4-A5edFK0
+
+Bueno, vamos con la parte más difícil eh
+del tema de las potencias. Son las
+propiedades de las potencias. Esta
+primera ya la conocemos porque era la
+definición de potencia, ¿no? Si tengo a
+* a * a por a, pues repitiéndose,
+multiplicándose muchas veces, lo
+escribimos como a elevado n y n es el
+número de veces que se está
+multiplicando, ¿vale? De aquí se deriva
+la primera propiedad. A elevado 1 es que
+simplemente hay una a, ¿vale? Por
+ejemplo, 7 elevado 1 es 7. o al revés,
+si tengo un seis, pues es como si
+pusiera 6 elevado 1. O sea, que los
+números que no ponga el exponente, en el
+fondo el exponente es un 1. La siguiente
+propiedad es sencilla pero extraña.
+Cualquier número elevado a 0 es 1. O
+sea, 7 elevado 0, 4 elevado 0, cualquier
+número elevado a 0 1. Esto es un poco
+raro. Intentaremos ver después una
+pequeña demostración. Colocamos aquí
+estas propiedades y seguimos. Venga, una
+importante. A elevado m * a elevado n =
+a elevado a y sumo los exponentes m + n.
+Por ejemplo, 5 elevado 3 * 5 elevado 4,
+pues sumo los exponentes y es como 5
+elevado 7. Importante, esto se cumple si
+la base es la misma que es 5, ¿vale? Por
+ejemplo, 2 elevado 3 * 2 * 2 elevado 6
+es ig a sumad exponentes, os sale.
+Recordad que el dos del centro que no
+pone nada es como si el exponente fuera
+un 1. Entonces si sumáis es 3 + 1 4 + 6
+10. Vale, cuidado con eso. ¿Por qué?
+Pues fijaos, 2 elevado 3 es como si
+fuera 2 * 2 * 2.
+Aquí tenemos un 2 que es un dos, no pone
+nada, pero hay un dos y aquí tendríamos
+6es. Entonces, si os dais cuenta, si
+multiplicamos todos esos, en el fondo
+estamos multiplicando 10. ¿Lo veis la
+suma? Esa es la razón por la que esta
+propiedad es así, ¿vale? Así que la
+colocamos aquí. Siguiente propiedad. A
+elevado m entre ahora dividimos a
+elevado n, pues los exponentes se
+restan. Es a elevado m - n. Ejemplo, 5
+elevado 8 / 5 elevado 6, pues resto de
+los exponentes es 5 elevado 2. 2 elevado
+3 / 2. Ojo que ese 2 no pone exponente,
+pero si no pone nada es que es un 1.
+Entonces 3 - 1 2. Vale 4 elevado 5 / 4
+elevado 9 pues resto y 5 - 9 es -4. ¿Qué
+se le va a hacer? Si da negativo, da
+negativo, ¿vale? Lo tengáis medido. 5 -
+9 - 4.
+Mirad, vamos a quedarnos un poco con
+esta demostración para ver por qué esta
+propiedad es así. 5 elevado 8 es como si
+hubiera 8 C arriba entre 5 elevado 6,
+que es como si hubiera 6 C abajo. ¿Vale?
+Es como si podemos colocar esta división
+de esta manera. Y entonces mirad los
+primeros cincos. En el fondo podría
+dividir 5 / 5, que es 1 y el siguiente
+cinco también. 5 / 5 es un Así se van
+tachando, tachando, pero ¿qué pasa? Que
+en el piso de arriba había ocho y en el
+de abajo seis. Cuando voy tachando al
+final quedan o sobreviven, por así
+decirlo, dos cincos arriba. Por eso los
+exponentes se tachan, ¿no? 5 elevado 8 /
+5 elevado 6 se van dividiendo,
+dividiendo y queda 5 elevado 2. ¿Vale?
+Mirad ahora esta extrañación. Por
+ejemplo, ¿cuánto sería 2 elevado 3 / 2
+elevado 3? Por una parte nos olvidamos
+de las potencias. 2 elevado 3 es como 2
+* 2 * 2. Entonces sería como 8 / 8 que
+es 1. ¿Estáis de acuerdo con eso? Pero
+por otra parte si hacemos caso a la
+propiedad que dice que hay que restar
+los exponentes, sería 2 elevado a 0.
+Entonces, si os dais cuenta, 1 es lo
+mismo que 2 elevado a 0. Y más o menos
+así podemos demostrar esta propiedad tan
+rara del que decía que cada número
+elevado a cer es 1.
+Bueno, pues colocamos aquí esta
+propiedad. Vamos con la siguiente.
+Ahora, fijaos que las bases cambian, es
+a y b, pero los exponentes son el mismo.
+Entonces, a elevado m * b elevado a m es
+como si multiplico a por b y lo elevo a
+m. Y esta propiedad tiene sentido
+también al revés. Si me encuentro con un
+paréntesis que pone a * b elevado m,
+pues ese exponente m, ¿para quién es?
+Pues para los dos, para a y para b. O
+sea, es como si pusiera a elevado m * b
+elevado m. Ejemplos con números, que es
+más fácil. 5 elevado 8 * 3 elevado 8.
+Como es el mismo exponente, pues puedo
+multiplicar es 15 elevado 8, ¿vale? O si
+me encuentro en entre paréntesis 7 * x
+elevado 2, ¿para quién es ese 2? ¿Para
+el 7 o para el x? Pues para los dos. Es
+como si fuera 7 elevado 2 * x elevado 2.
+Fijaos que ya he puesto 49 porque 7
+elevado 2 no es 14, es 7 * 7 que es 49.
+Vale, coloco aquí esta propiedad. La
+siguiente es parecida, pero con la
+división a elevado m / b elevado m, si
+tiene el mismo exponente, puedo dividir
+las bases. Es a / b elevado a m, ¿vale?
+O si me encuentro primero el paréntesis,
+pues, ¿para quién es ese exponente esa
+m? ¿Para la a o para la b? Para los dos.
+Ejemplos. 2 elevado 8 / 3 elevado 8,
+pues puedo dividir 2 / 3. Sería 4
+elevado 8. O si me encuentro el
+paréntesis 3 / 5 elevado 2, ¿quién está
+elevado a 2? el tres o el cinco, pues
+los dos. Por eso lo han puesto entre
+paréntesis. Entonces sería, fijaos, 9 el
+partido de 25, 9 que es 3 * 3 y 25 que
+es 5 * 5. ¿Vale? De nuevo, aquí va esa
+propiedad. Una nueva propiedad, la
+potencia de una potencia. Si tengo a
+elevado m y a la vez elevado a n,
+entonces los exponentes se multiplican,
+¿vale? Por ejemplo, si tengo 5 elevado 3
+y a la vez elevado a 4, pues multiplico
+es 5 elevado 12. explicación. Pues
+fijaos,
+5 elevado a 3 elevado 4 es como si
+tuviéramos cuatro veces 5 elevado 3, 5
+elevado 3, 5 3 y 5 elevado 3. Y a su vez
+cada 5 elevado a 3 es como si tuviera 3
+C. 5 5 5
+total que al final multiplicas 3 * 4 que
+es 12. Tienes 12 C ahí. ¿Vale? Un nuevo
+ejemplo. 2 elevado 3 elevado -2. Pues
+sin miedo multiplicamos 3 * -2 es -6.
+Pues es 2 elevado -6. Estupendo. 4
+elevado 3 elevado 0 elevado 2. Bueno,
+pues voy multiplicando exponentes y en
+el fondo esto tiene trampa porque 3 * 0
+es 0 * 2, pues es 4 elevado 0, que por
+cierto, si os acordáis era 1.
+Antes de terminar aclaraciones
+importantísimas. Las propiedades son más
+o menos sencillas, pero también es
+importante saber qué no es propiedad,
+¿vale? Lo que no salgan las propiedades
+no se puede hacer. Entonces, recordamos,
+si las potencias tienen la misma base,
+el resultado tiene la misma base. O sea,
+3 elevado 5 * 3 elevado 4, pues el
+resultado era 3 elevado 9 o 3 elevado 5
+/ 3 elevado 4. El resultado es 3 elevado
+1. Aunque no he puesto nada. Si las
+potencias tienen el mismo exponente, el
+resultado también tiene el mismo
+exponente. Por ejemplo, 3 elevado 5 * 2
+elevado 5. La base no es la misma, pero
+el exponente sí. Entonces podía hacer 3
+* 2 6 elevado 5 o 6 elevado 5 / 3
+elevado 5 pues puedo dividir es 2
+elevado 5.
+Pero si no tienen nada en común, si no
+tienen el mismo los exponentes ni las
+mismas bases, no se puede aplicar
+ninguna propiedad, solo operar. Por
+ejemplo, 3 elevado 5 * 2 elevado 4. Pues
+no sé lo que es. Se puede saber si cojo
+la calculadora y lo opero. 3 elevado 5 y
+2 elevado 4, que en este caso es pues
+fíjate, 243 * 16. Pero que eso no nos
+interesa. Seguramente no os encontréis
+con cosas así porque lo que interesa en
+este tema es manejar potencias. Y luego,
+importantísimo, si os dais cuenta,
+ninguna de estas propiedades habla de la
+suma o la resta de potencias, así que
+mucho cuidado. 2 elevado 5 + 2 elevado 3
+no es nada, o por lo menos no es 2
+elevado 8, ¿vale? Será lo que sea. Si
+opo 2 elevado 5 por una parte tampoco es
+4 elevado 8, no se puede hacer nada para
+agrupar, ¿vale? Es pues 2 elevado 5 que
+es 32 + 2 el 3 que es 8. Pues estupendo
+lo que dé, pero no hay ninguna propiedad
+que lo pueda agrupar. De la misma manera
+con la resta. 5 elevado 4 - 2 elevado 4
+no es 3 elevado 4 ni es 3 elevado a 0 ni
+es nada extraño. lo que sea, 5 elevado a
+4, pues que es 125 - 2 4 16, ¿vale?
