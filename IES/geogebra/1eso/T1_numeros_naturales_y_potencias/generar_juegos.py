@@ -6,6 +6,7 @@
 Crea, junto a este script:
     juego_numeros_naturales_1eso.ggb
     juego_potencias_1eso.ggb
+    juego_operaciones_niveles_1eso.ggb
 
 Para añadir o cambiar preguntas, edita NATURALES o POTENCIAS y vuelve a
 ejecutar el script. Cada reto es un diccionario con:
@@ -721,46 +722,6 @@ OPERACIONES = [
 # --------------------------------------------------------------------------
 # Construcción del .ggb
 # --------------------------------------------------------------------------
-JS_CRONO = """\
-// ===== Cronómetro de cuenta atrás =====
-// En cada reto nuevo (cambia "ronda") vuelve a "segundos"; se para al responder.
-// "segundos" se elige en la pantalla de inicio (0 = sin límite).
-//
-// Funciona en GeoGebra Classic 6 / web (setInterval nativo) y en
-// GeoGebra Classic 5 de escritorio (Java/Rhino), donde se emula con java.util.Timer.
-
-if (typeof setInterval === "undefined" && typeof JavaAdapter !== "undefined") {
-    var _ggbTimer = new java.util.Timer();
-    setInterval = function (fn, delay) {
-        var task = new JavaAdapter(java.util.TimerTask, { run: fn });
-        _ggbTimer.schedule(task, delay, delay);
-        return task;
-    };
-}
-
-var _arrancado = false;
-
-function ggbOnInit() {
-    ggbApplet.registerObjectUpdateListener("ronda", "reiniciarCrono");
-    if (!_arrancado && typeof setInterval !== "undefined") {
-        setInterval(tick, 1000);
-        _arrancado = true;
-    }
-}
-
-function reiniciarCrono() {
-    ggbApplet.setValue("restante", ggbApplet.getValue("segundos"));
-}
-
-function tick() {
-    if (ggbApplet.getValue("reto") < 1 || ggbApplet.getValue("resp") > 0) return;
-    var r = ggbApplet.getValue("restante");
-    if (r > 0.5) {
-        ggbApplet.setValue("restante", r - 1);
-    }
-}
-"""
-
 COL_TITULO = (20, 50, 110)
 COL_GRIS = (110, 110, 110)
 COL_OPCION = (222, 233, 250)
@@ -876,8 +837,19 @@ def construir_xml(titulo, retos, semilla, niveles=None):
     c = Construccion()
     # --- estado del juego ---
     for label, val in [("N", n), ("reto", 0), ("resp", 0), ("ronda", 0), ("G", 5),
-                       ("turno", 1), ("segundos", 30), ("restante", 30)]:
+                       ("turno", 1), ("segundos", 30)]:
         c.numero(label, val)
+    # GeoGebra recorre el intervalo en 10 / velocidad segundos. Tipo 3: una sola vez.
+    # Max(1, segundos) mantiene valido el deslizador cuando se elige "sin limite".
+    c.add('''<expression label="transcurrido" exp="0"/>
+<element type="numeric" label="transcurrido">
+    <value val="0"/>
+    <show object="false" label="false"/>
+    <slider min="0" max="Max(1, segundos)" absoluteScreenLocation="true"
+            width="100" x="0" y="0" fixed="true" horizontal="true"/>
+    <animation step="0.05" speed="10 / Max(1, segundos)" type="3" playing="false"/>
+</element>''')
+    c.oculto("restante", "Max(0, segundos - floor(transcurrido))", "numeric")
     c.oculto("pend", ggb_list(str(k) for k in range(1, n + 1)), "list")
     c.oculto("elim", ggb_list(["0"] * MAX_GRUPOS), "list")
     c.oculto("comodin", ggb_list(["1"] * MAX_GRUPOS), "list")
@@ -922,10 +894,12 @@ def construir_xml(titulo, retos, semilla, niveles=None):
     else:
         sorteo = ["If(Length(pend) ≟ 0, SetValue(pend, Sequence(N)))",
                   "SetValue(reto, RandomElement(pend))"]
-    sortear = "\n".join(sorteo + [
+    sortear = "\n".join(["StartAnimation(transcurrido, false)"] + sorteo + [
         "SetValue(pend, KeepIf(x ≠ reto, pend))",
         "SetValue(resp, 0)",
         "SetValue(ronda, ronda + 1)",
+        "SetValue(transcurrido, 0)",
+        "StartAnimation(transcurrido, segundos > 0)",
     ])
     empezar = "\n".join([
         f"SetValue(elim, {ggb_list(['0'] * MAX_GRUPOS)})",
@@ -996,6 +970,7 @@ def construir_xml(titulo, retos, semilla, niveles=None):
         x, y = posiciones[L]
         exp = f'"\\;\\text{{{L})}}\\quad " + Element(op{L}, reto) + "\\;\\;"'
         responder = "\n".join([
+            "StartAnimation(transcurrido, false)",
             f"If(reto > 0 ∧ resp ≟ 0 ∧ vivos > 1 ∧ solActual ≟ {k}, "
             f"SetValue(aciertos, turno, Element(aciertos, turno) + 1))",
             f"If(reto > 0 ∧ resp ≟ 0 ∧ vivos > 1 ∧ solActual ≠ {k}, SetValue(elim, turno, 1))",
@@ -1033,7 +1008,8 @@ def construir_xml(titulo, retos, semilla, niveles=None):
             cond="reto > 0 ∧ resp ≟ 0 ∧ vivos > 1 ∧ Element(comodin, turno) ≟ 1")
     c.boton("bSiguiente", "  Siguiente reto ►  ", 400, 655, siguiente, bg=(40, 90, 200), size=2.0,
             cond="reto > 0 ∧ vivos > 1")
-    c.boton("bNueva", "Nueva partida", 1110, 690, "SetValue(reto, 0)\nSetValue(resp, 0)",
+    c.boton("bNueva", "Nueva partida", 1110, 690,
+            "StartAnimation(transcurrido, false)\nSetValue(reto, 0)\nSetValue(resp, 0)",
             bg=(130, 130, 130), size=1.0, cond=juego)
 
     # --- marcador ---
@@ -1107,7 +1083,6 @@ def guardar(nombre, titulo, retos, semilla, niveles=None):
     ruta = AQUI / nombre
     with zipfile.ZipFile(ruta, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr("geogebra.xml", construir_xml(titulo, retos, semilla, niveles))
-        z.writestr("geogebra_javascript.js", JS_CRONO)
     print(f"{ruta.name}: {len(retos)} retos")
 
 

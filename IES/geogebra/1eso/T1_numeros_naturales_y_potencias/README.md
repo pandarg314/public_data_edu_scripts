@@ -19,6 +19,33 @@
 4. **Siguiente reto ►** pasa al siguiente grupo que siga en juego. Si se pulsa sin responder, sirve para anular un reto.
 5. Gana el último grupo que quede en juego. El marcador muestra también los aciertos de cada grupo, por si la clase termina antes.
 
+## Cronómetro y uso sin internet
+
+El cronómetro usa un deslizador oculto con animación nativa de GeoGebra. Se
+reinicia al empezar, pasar palabra o sortear otro reto; se detiene al responder,
+al volver a la pantalla inicial o al llegar a cero. Con tiempo 0 no se anima.
+Al agotarse el tiempo aparece **¡TIEMPO!**: es un aviso para el profesor, sin
+eliminación automática ni bloqueo de respuestas.
+
+Se ha sustituido el temporizador JavaScript anterior, que se quedaba parado en
+entornos donde `setInterval` no está disponible. Los archivos no necesitan
+JavaScript global ni recursos de internet. La velocidad de la animación sigue
+la [documentación de GeoGebra](https://geogebra.github.io/docs/manual/en/Animation/);
+es un reloj aproximado para el aula, no un cronómetro de precisión.
+
+Para Ubuntu de 64 bits, GeoGebra enlaza **Classic 5 Portable para Linux** en su
+[manual de instalación](https://geogebra.github.io/docs/reference/en/GeoGebra_Installation/).
+La [descarga procede de GeoGebra](https://download.geogebra.org/package/linux-port),
+aunque la distribución Linux está marcada como **sin soporte**. Se descomprime
+y se ejecuta `geogebra-portable` desde la carpeta extraída. Una vez descargado,
+permite abrir estos `.ggb` locales sin internet.
+
+La validación automática comprueba la estructura de los archivos y los guiones
+del reloj, pero no sustituye la prueba dentro de GeoGebra. Antes de llevarlos al
+aula: abrir cada juego con el wifi desconectado, elegir 5 segundos, comprobar la
+cuenta atrás y su reinicio con **Siguiente reto** y **PASAPALABRA**, responder
+antes de que acabe y comprobar también una partida con tiempo 0.
+
 ## Editar los retos
 
 Los `.ggb` se generan con `generar_juegos.py`. Para cambiar o añadir retos, edita las listas `NATURALES`, `POTENCIAS` u `OPERACIONES` y ejecuta:

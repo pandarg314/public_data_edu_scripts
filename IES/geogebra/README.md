@@ -2,6 +2,12 @@
 
 Este repositorio organiza juegos de GeoGebra para ESO. La idea principal no es usar GeoGebra solo para explicar, sino como arbitro de retos competitivos en clase.
 
+## Uso en Ubuntu y pizarra digital
+
+La [guia de GeoGebra en Ubuntu 24.04](USO_UBUNTU_24.md) recoge la instalacion
+portable fuera del proyecto, el arranque, el atajo de pantalla completa y las
+pruebas de los juegos y temporizadores sin internet.
+
 ## Contexto de aula
 
 - La clase trabaja en grupos de 2 a 4 personas.
