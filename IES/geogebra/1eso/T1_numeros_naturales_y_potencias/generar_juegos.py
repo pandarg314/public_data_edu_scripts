@@ -19,6 +19,7 @@ Las opciones se barajan con semilla fija, así que la letra correcta cambia
 de un reto a otro pero no entre ejecuciones. No uses comillas dobles.
 """
 
+import math
 import random
 import re
 import textwrap
@@ -353,6 +354,371 @@ POTENCIAS = [
 ]
 
 # --------------------------------------------------------------------------
+# Operaciones combinadas
+# Se escriben en texto sencillo y el script calcula la solución, comprueba
+# los distractores y genera la resolución paso a paso:
+#     *  multiplicación (·)     /  división (:)     ^  potencia
+#     ( ) [ ] { }  paréntesis, corchetes y llaves   r(...)  raíz cuadrada
+# Todos los resultados intermedios tienen que ser números naturales
+# (sin restas negativas ni divisiones inexactas); si no, el script avisa.
+# --------------------------------------------------------------------------
+class Num:
+    def __init__(self, v):
+        self.v = v
+
+
+class Grupo:
+    def __init__(self, abre, e):
+        self.abre, self.e = abre, e
+
+
+class Raiz:
+    def __init__(self, e):
+        self.e = e
+
+
+class Pot:
+    def __init__(self, base, exp):
+        self.base, self.exp = base, exp
+
+
+class Cadena:
+    """Operaciones del mismo nivel seguidas: sumas/restas o productos/divisiones."""
+
+    def __init__(self, nivel, primero, resto):
+        self.nivel, self.primero, self.resto = nivel, primero, resto
+
+
+CIERRE = {"(": ")", "[": "]", "{": "}"}
+
+
+def analizar(texto):
+    limpio = texto.replace(" ", "")
+    tokens = re.findall(r"\d+|r|[-+*/^()\[\]{}]", limpio)
+    assert "".join(tokens) == limpio, f"Símbolo no válido en {texto}"
+    pos = 0
+
+    def mirar():
+        return tokens[pos] if pos < len(tokens) else None
+
+    def tomar(esperado=None):
+        nonlocal pos
+        t = mirar()
+        assert t is not None and (esperado is None or t == esperado), f"Error de sintaxis en {texto}"
+        pos += 1
+        return t
+
+    def cadena(nivel, ops, siguiente):
+        primero, resto = siguiente(), []
+        while mirar() in ops:
+            op = tomar()
+            resto.append((op, siguiente()))
+        return Cadena(nivel, primero, resto) if resto else primero
+
+    def suma():
+        return cadena("suma", ("+", "-"), producto)
+
+    def producto():
+        return cadena("producto", ("*", "/"), potencia)
+
+    def potencia():
+        base = primario()
+        if mirar() == "^":
+            tomar()
+            return Pot(base, potencia())
+        return base
+
+    def primario():
+        t = tomar()
+        if t.isdigit():
+            return Num(int(t))
+        if t == "r":
+            tomar("(")
+            e = suma()
+            tomar(")")
+            return Raiz(e)
+        assert t in CIERRE, f"Error de sintaxis en {texto}"
+        e = suma()
+        tomar(CIERRE[t])
+        return Grupo(t, e)
+
+    arbol = suma()
+    assert pos == len(tokens), f"Sobran símbolos en {texto}"
+    return arbol
+
+
+def operar(op, a, b, texto):
+    if op == "+":
+        return a + b
+    if op == "-":
+        assert a >= b, f"{texto}: la resta {a} - {b} no da un número natural"
+        return a - b
+    if op == "*":
+        return a * b
+    if op == "/":
+        assert b != 0 and a % b == 0, f"{texto}: la división {a} : {b} no es exacta"
+        return a // b
+    return a ** b
+
+
+def raiz(a, texto):
+    r = math.isqrt(a)
+    assert r * r == a, f"{texto}: la raíz de {a} no es exacta"
+    return r
+
+
+def calcular(n, texto):
+    """Valor de un árbol (la estructura del árbol ya recoge la jerarquía)."""
+    if isinstance(n, Num):
+        return n.v
+    if isinstance(n, Grupo):
+        return calcular(n.e, texto)
+    if isinstance(n, Raiz):
+        return raiz(calcular(n.e, texto), texto)
+    if isinstance(n, Pot):
+        return operar("^", calcular(n.base, texto), calcular(n.exp, texto), texto)
+    v = calcular(n.primero, texto)
+    for op, x in n.resto:
+        v = operar(op, v, calcular(x, texto), texto)
+    return v
+
+
+def tiene_grupo(n):
+    if isinstance(n, Num):
+        return False
+    if isinstance(n, Grupo):
+        return True
+    if isinstance(n, Raiz):
+        return not isinstance(n.e, Num)
+    if isinstance(n, Pot):
+        return tiene_grupo(n.base) or tiene_grupo(n.exp)
+    return tiene_grupo(n.primero) or any(tiene_grupo(x) for _, x in n.resto)
+
+
+def hay(n, cond):
+    if cond(n):
+        return True
+    if isinstance(n, (Grupo, Raiz)):
+        return hay(n.e, cond)
+    if isinstance(n, Pot):
+        return hay(n.base, cond) or hay(n.exp, cond)
+    if isinstance(n, Cadena):
+        return hay(n.primero, cond) or any(hay(x, cond) for _, x in n.resto)
+    return False
+
+
+def paso(n, texto):
+    """Un paso de cálculo, respetando la jerarquía:
+    1) lo de dentro de los paréntesis/corchetes/llaves más interiores (y de las raíces),
+    2) potencias y raíces, 3) multiplicaciones y divisiones, 4) sumas y restas.
+    En 3) y 4) se hace la operación de más a la izquierda de cada cadena; cadenas
+    distintas (separadas por + o -) avanzan a la vez."""
+    return reducir_grupos(n, texto) if tiene_grupo(n) else paso_plano(n, texto)
+
+
+def reducir_grupos(n, texto):
+    if isinstance(n, Num):
+        return n
+    if isinstance(n, Grupo):
+        if tiene_grupo(n.e):
+            return Grupo(n.abre, reducir_grupos(n.e, texto))
+        dentro = paso_plano(n.e, texto)
+        return dentro if isinstance(dentro, Num) else Grupo(n.abre, dentro)
+    if isinstance(n, Raiz):
+        if isinstance(n.e, Num):
+            return n
+        return Raiz(reducir_grupos(n.e, texto) if tiene_grupo(n.e) else paso_plano(n.e, texto))
+    if isinstance(n, Pot):
+        return Pot(reducir_grupos(n.base, texto), reducir_grupos(n.exp, texto))
+    return Cadena(n.nivel, reducir_grupos(n.primero, texto),
+                  [(op, reducir_grupos(x, texto)) for op, x in n.resto])
+
+
+def paso_plano(n, texto):
+    if hay(n, lambda m: isinstance(m, (Pot, Raiz))):
+        return quitar_potencias(n, texto)
+    if hay(n, lambda m: isinstance(m, Cadena) and m.nivel == "producto"):
+        return avanzar_cadenas(n, "producto", texto)
+    return avanzar_cadenas(n, "suma", texto)
+
+
+def quitar_potencias(n, texto):
+    if isinstance(n, Pot):
+        base, exp = quitar_potencias(n.base, texto), quitar_potencias(n.exp, texto)
+        if isinstance(base, Num) and isinstance(exp, Num):
+            return Num(operar("^", base.v, exp.v, texto))
+        return Pot(base, exp)
+    if isinstance(n, Raiz) and isinstance(n.e, Num):
+        return Num(raiz(n.e.v, texto))
+    if isinstance(n, Cadena):
+        return Cadena(n.nivel, quitar_potencias(n.primero, texto),
+                      [(op, quitar_potencias(x, texto)) for op, x in n.resto])
+    return n
+
+
+def avanzar_cadenas(n, nivel, texto):
+    if not isinstance(n, Cadena):
+        return n
+    primero = avanzar_cadenas(n.primero, nivel, texto)
+    resto = [(op, avanzar_cadenas(x, nivel, texto)) for op, x in n.resto]
+    if n.nivel != nivel:
+        return Cadena(n.nivel, primero, resto)
+    (op, x), cola = resto[0], resto[1:]
+    v = Num(operar(op, primero.v, x.v, texto))
+    return Cadena(nivel, v, cola) if cola else v
+
+
+def pasos(arbol, texto):
+    valor, lista = calcular(arbol, texto), [arbol]
+    while not isinstance(lista[-1], Num):
+        lista.append(paso(lista[-1], texto))
+        assert calcular(lista[-1], texto) == valor, f"{texto}: un paso cambia el resultado"
+        assert len(lista) < 20, f"{texto}: demasiados pasos"
+    return lista
+
+
+def numero(v):
+    s = str(v)
+    if v < 10000:
+        return s
+    grupos = []
+    while s:
+        grupos.insert(0, s[-3:])
+        s = s[:-3]
+    return r"\,".join(grupos)
+
+
+SIMBOLO = {"+": " + ", "-": " - ", "*": r" \cdot ", "/": " : "}
+LATEX_ABRE = {"(": "(", "[": "[", "{": r"\{"}
+LATEX_CIERRA = {"(": ")", "[": "]", "{": r"\}"}
+
+
+def latex(n):
+    if isinstance(n, Num):
+        return numero(n.v)
+    if isinstance(n, Grupo):
+        return LATEX_ABRE[n.abre] + latex(n.e) + LATEX_CIERRA[n.abre]
+    if isinstance(n, Raiz):
+        return r"\sqrt{" + latex(n.e) + "}"
+    if isinstance(n, Pot):
+        return latex(n.base) + "^{" + latex(n.exp) + "}"
+    return latex(n.primero) + "".join(SIMBOLO[op] + latex(x) for op, x in n.resto)
+
+
+def ancho(n):
+    """Longitud aproximada en caracteres, para partir la resolución en líneas."""
+    if isinstance(n, Num):
+        return len(str(n.v))
+    if isinstance(n, Grupo):
+        return ancho(n.e) + 2
+    if isinstance(n, Raiz):
+        return ancho(n.e) + 2
+    if isinstance(n, Pot):
+        return ancho(n.base) + ancho(n.exp)
+    return ancho(n.primero) + sum(3 + ancho(x) for _, x in n.resto)
+
+
+def resolucion(lista, max_ancho=46):
+    lineas, actual, largo = [], latex(lista[0]), ancho(lista[0])
+    for n in lista[1:]:
+        # El resultado final no se queda solo en una línea: se le permite algo más de ancho.
+        limite = max_ancho + (6 if n is lista[-1] else 0)
+        if largo + 3 + ancho(n) <= limite:
+            actual += " = " + latex(n)
+            largo += 3 + ancho(n)
+        else:
+            lineas.append(actual)
+            actual, largo = "= " + latex(n), 2 + ancho(n)
+    lineas.append(actual)
+    return r" \\ ".join(lineas)
+
+
+def oper(texto, malas, tema, pregunta="Calcula:", expl=None, nota=None):
+    """Reto de operaciones. malas: expresiones con errores típicos (o números)."""
+    arbol = analizar(texto)
+    lista = pasos(arbol, texto)
+    sol = lista[-1].v
+    valores = [m if isinstance(m, int) else calcular(analizar(m), m) for m in malas]
+    assert len(valores) == 3 and sol not in valores and len(set(valores)) == 3, \
+        f"{texto}: distractores repetidos o iguales a la solución {sol}: {valores}"
+    if expl is None:
+        expl = resolucion(lista)
+        if nota:
+            expl = T(nota) + r" \\ " + expl
+    return dict(tema=tema, pregunta=pregunta, expr=latex(arbol), ok=numero(sol),
+                malas=[numero(v) for v in valores], expl=expl)
+
+
+MENTAL, JER, IZQ = "Nivel 1 · Cálculo mental", "Nivel 1 · Primero · y :, luego + y −", \
+    "Nivel 1 · Mismo nivel: de izquierda a derecha"
+PAR, IZQ2, POT2 = "Nivel 2 · Paréntesis", "Nivel 2 · Mismo nivel: de izquierda a derecha", \
+    "Nivel 2 · Potencias y raíces"
+COR, LLA, POT3 = "Nivel 3 · Corchetes", "Nivel 3 · Llaves", "Nivel 3 · Potencias y raíces con corchetes"
+MISMO_NIVEL = "Mismo nivel: de izquierda a derecha"
+
+OPERACIONES = [
+    ("Nivel 1", [
+        oper("7*8", [54, 48, "7+8"], MENTAL, "Calcula mentalmente:",
+             expl=T("Truco: 5, 6, 7, 8 ") + r"\rightarrow 56 = 7 \cdot 8"),
+        oper("54/6", [8, "54-6", 6], MENTAL, "Calcula mentalmente:",
+             expl=r"6 \cdot 9 = 54" + T(", así que ") + "54 : 6 = 9"),
+        oper("25*4", ["25+4", 1000, 80], MENTAL, "Calcula mentalmente:",
+             expl=r"25 \cdot 4 = 100" + T(" (4 monedas de 25 céntimos son 1 euro)")),
+        oper("99+46", [135, 144, 155], MENTAL, "Calcula mentalmente:",
+             expl="99 + 46 = 100 + 46 - 1 = 145"),
+        oper("200-75", [135, 175, "200+75"], MENTAL, "Calcula mentalmente:",
+             expl="200 - 75 = 200 - 100 + 25 = 125"),
+        oper("15*10", [1500, "15+10", 105], MENTAL, "Calcula mentalmente:",
+             expl=T("Por 10 se añade un cero: ") + r"15 \cdot 10 = 150"),
+        oper("480/10", [4800, "480-10", 408], MENTAL, "Calcula mentalmente:",
+             expl=T("Entre 10 se quita un cero: ") + "480 : 10 = 48"),
+        oper("6+4*5", ["(6+4)*5", "6+4+5", "6*4+5"], JER),
+        oper("20-3*4", ["(20-3)*4", "20-3-4", "3*4"], JER),
+        oper("18-12/3", ["(18-12)/3", "18-12", "12/3"], JER),
+        oper("5*6-4", ["5*(6-4)", "5*6", "5+6-4"], JER),
+        oper("36/4+5", ["36/(4+5)", "36/4", "36+4+5"], JER),
+        oper("12-5+3", ["12-(5+3)", "12+5+3", "12-5"], IZQ, nota=MISMO_NIVEL),
+        oper("40/5*2", ["40/(5*2)", "5*2", "40*2"], IZQ, nota=MISMO_NIVEL),
+        oper("9+1*0", ["(9+1)*0", "9+1", 1], JER),
+    ]),
+    ("Nivel 2", [
+        oper("(7+5)*3", ["7+5*3", "7+5+3", "7*5*3"], PAR),
+        oper("4*(10-6)+2", ["4*(10-6+2)", "4*10-6+2", "4+(10-6)+2"], PAR),
+        oper("30-(8+2)*2", ["(30-(8+2))*2", "30-8+2*2", "30-(8+2)"], PAR),
+        oper("24/(2+4)", ["24/2+4", "2+4", "24*(2+4)"], PAR),
+        oper("7*(8-5)-6", ["7*8-5-6", "7*(8-5)+6", "7*(8-5)"], PAR),
+        oper("50-4*(3+7)", ["(50-4)*(3+7)", "50-4*3+7", "4*(3+7)"], PAR),
+        oper("(15-7)*(2+3)", ["15-7*2+3", "(15-7)*2+3", "15-7+2+3"], PAR),
+        oper("48/6*2", ["48/(6*2)", "6*2", "48*2"], IZQ2, nota=MISMO_NIVEL),
+        oper("100-20-30", ["100-20+30", "100-30", "100+20+30"], IZQ2, nota=MISMO_NIVEL),
+        oper("6+18/3*2", ["6+18/(3*2)", "(6+18)/3*2", "(6+18)/(3*2)"], IZQ2, nota=MISMO_NIVEL),
+        oper("81/9/3", ["81/(9/3)", "81/9", "81*3"], IZQ2, nota=MISMO_NIVEL),
+        oper("5*2^2", ["(5*2)^2", "5*2+2", "5+2^2"], POT2),
+        oper("3^2+4", ["3*2+4", "(3+4)^2", "3+4"], POT2),
+        oper("r(36)+2*5", ["(r(36)+2)*5", "18+2*5", "36+2*5"], POT2),
+        oper("10^2-10*5", ["(10^2-10)*5", "10^2*5", "10^2-10"], POT2),
+    ]),
+    ("Nivel 3", [
+        oper("2+3*[10-(4+2)]", ["(2+3)*[10-(4+2)]", "2+3*[10-4+2]", "2+3*10-4+2"], COR),
+        oper("[18-(2+4)]/3", ["18-(2+4)/3", "[18+(2+4)]/3", "18-(2+4)"], COR),
+        oper("100/[5*(6-4)]", ["100/5*(6-4)", "100/5*6-4", "100/5"], COR),
+        oper("3*[4+2*(5-1)]", ["3*[(4+2)*(5-1)]", "3*4+2*(5-1)", "3*[4+2*5-1]"], COR),
+        oper("[(6+4)*2-5]*3", ["[6+4*2-5]*3", "(6+4)*2-5*3", "[(6+4)*2+5]*3"], COR),
+        oper("{20-[3*(6-2)]}/4", ["20-[3*(6-2)]/4", "{20-3*6-2}/4", "{20-[3*(6-2)]}*4"], LLA),
+        oper("{2+[3^2-(4+1)]}*2", ["2+[3^2-(4+1)]*2", "{2+[3*2-(4+1)]}*2", "{2+3^2-4+1}*2"], LLA),
+        oper("5*[3^2-(9-5)]", ["5*[3*2-(9-5)]", "5*3^2-(9-5)", "(5*3)^2-(9-5)"], POT3),
+        oper("4^2-[3*(7-5)]", ["4*2-[3*(7-5)]", "(4^2-3)*(7-5)", "3*(7-5)"], POT3),
+        oper("2*r(9+16)", ["2*(r(9)+r(16))", "2*(9+16)", "r(9)+r(16)"], POT3),
+        oper("(3+2)^2-3^2", ["3^2+2^2-3^2", "(3+2)*2-3^2", "(3+2)^2-3*2"], POT3),
+        oper("r(100)/[2+(6-3)]", ["r(100)/2+(6-3)", "100/[2+(6-3)]", "r(100)*[2+(6-3)]"], POT3),
+        oper("7+[36/(2^2+5)]", ["7+36/2^2+5", "36/(2^2+5)", "7*[36/(2^2+5)]"], POT3),
+        oper("5^2-2*[3+(8-4)]", ["(5^2-2)*[3+(8-4)]", "5^2-2*3+(8-4)", "5^2-2+[3+(8-4)]"], POT3),
+        oper("[(12-4)/2+6]*[3^2-7]", ["[(12-4)/(2+6)]*[3^2-7]", "[12-4/2+6]*[3^2-7]",
+                                       "[(12-4)/2+6]+[3^2-7]"], POT3),
+    ]),
+]
+
+# --------------------------------------------------------------------------
 # Construcción del .ggb
 # --------------------------------------------------------------------------
 JS_CRONO = """\
@@ -483,8 +849,10 @@ class Construccion:
         self.add("\n".join(xml))
 
 
-def construir_xml(titulo, retos, semilla):
+def construir_xml(titulo, retos, semilla, niveles=None):
+    """niveles: lista con el número de retos de cada nivel (en orden), o None si no hay niveles."""
     n = len(retos)
+    assert niveles is None or sum(niveles) == n
     rng = random.Random(semilla)
     temas, preguntas, exprs, sols, expls, largos = [], [], [], [], [], []
     ops = {L: [] for L in "ABCD"}
@@ -534,11 +902,27 @@ def construir_xml(titulo, retos, semilla):
     c.oculto("candidatos",
              "Sequence(If(Element(elim, Element(orden, j)) ≟ 0, Element(orden, j), 0), j, 1, G)", "list")
     c.oculto("sigTurno", "Element(KeepIf(x > 0, candidatos), 1)", "numeric")
+    if niveles:
+        # Los retos van ordenados por nivel; nivelSel = 0 significa todos mezclados.
+        limites = [0]
+        for m in niveles:
+            limites.append(limites[-1] + m)
+        c.numero("nivelSel", 1)
+        c.oculto("lim", ggb_list(str(v) for v in limites), "list")
+        c.oculto("loNivel", "If(nivelSel ≟ 0, 0, Element(lim, Max(1, nivelSel)))", "numeric")
+        c.oculto("hiNivel", f"If(nivelSel ≟ 0, N, Element(lim, Min({len(limites)}, nivelSel + 1)))",
+                 "numeric")
+        c.oculto("candNivel", "KeepIf(x > loNivel ∧ x ≤ hiNivel, pend)", "list")
 
     # --- guiones ---
-    sortear = "\n".join([
-        "If(Length(pend) ≟ 0, SetValue(pend, Sequence(N)))",
-        "SetValue(reto, RandomElement(pend))",
+    if niveles:
+        # Si ya han salido todos los retos del nivel elegido, se vuelven a meter los de ese nivel.
+        sorteo = ["If(Length(candNivel) ≟ 0, SetValue(pend, Join(pend, Sequence(loNivel + 1, hiNivel))))",
+                  "SetValue(reto, RandomElement(candNivel))"]
+    else:
+        sorteo = ["If(Length(pend) ≟ 0, SetValue(pend, Sequence(N)))",
+                  "SetValue(reto, RandomElement(pend))"]
+    sortear = "\n".join(sorteo + [
         "SetValue(pend, KeepIf(x ≠ reto, pend))",
         "SetValue(resp, 0)",
         "SetValue(ronda, ronda + 1)",
@@ -567,20 +951,36 @@ def construir_xml(titulo, retos, semilla):
               "3. Una vez por partida, un grupo puede decir PASAPALABRA:\n"
               "    no responde, no le eliminan y el turno pasa al siguiente grupo.\n"
               "4. Gana el último grupo que quede en juego.")
+    if niveles:
+        reglas += "\n5. El nivel se puede cambiar en cualquier momento (botones de arriba)."
+    # Filas de la pantalla de inicio: posición y de los botones (el texto va 40 px más abajo).
+    y_grupos, y_tiempo, y_empezar = (370, 445, 600) if niveles else (390, 470, 570)
     c.texto("tReglas", ggb_str(reglas), 30, 120, cond=inicio, size=1.4)
-    c.texto("tGrupos", '"Número de grupos: " + G', 30, 430, cond=inicio, size=1.6, bold=True)
-    c.boton("bGmenos", "  −  ", 380, 390, "SetValue(G, Max(2, G - 1))", cond=inicio, size=2.2)
-    c.boton("bGmas", "  +  ", 470, 390, f"SetValue(G, Min({MAX_GRUPOS}, G + 1))", cond=inicio, size=2.2)
+    c.texto("tGrupos", '"Número de grupos: " + G', 30, y_grupos + 40, cond=inicio, size=1.6, bold=True)
+    c.boton("bGmenos", "  −  ", 380, y_grupos, "SetValue(G, Max(2, G - 1))", cond=inicio, size=2.2)
+    c.boton("bGmas", "  +  ", 470, y_grupos, f"SetValue(G, Min({MAX_GRUPOS}, G + 1))", cond=inicio, size=2.2)
     c.texto("tSegundos",
             'If(segundos ≟ 0, "Tiempo por reto: sin límite", "Tiempo por reto: " + segundos + " s")',
-            30, 510, cond=inicio, size=1.6, bold=True)
-    c.boton("bTmenos", "  −  ", 380, 470, "SetValue(segundos, Max(0, segundos - 5))", cond=inicio, size=2.2)
-    c.boton("bTmas", "  +  ", 470, 470, "SetValue(segundos, Min(120, segundos + 5))", cond=inicio, size=2.2)
-    c.boton("bEmpezar", "   EMPEZAR   ", 30, 570, empezar, cond=inicio, bg=(30, 140, 60), size=2.6)
+            30, y_tiempo + 40, cond=inicio, size=1.6, bold=True)
+    c.boton("bTmenos", "  −  ", 380, y_tiempo, "SetValue(segundos, Max(0, segundos - 5))", cond=inicio, size=2.2)
+    c.boton("bTmas", "  +  ", 470, y_tiempo, "SetValue(segundos, Min(120, segundos + 5))", cond=inicio, size=2.2)
+    c.boton("bEmpezar", "   EMPEZAR   ", 30, y_empezar, empezar, cond=inicio, bg=(30, 140, 60), size=2.6)
+    if niveles:
+        c.texto("tNivelInicio", '"Nivel:"', 30, 560, cond=inicio, size=1.6, bold=True)
+        c.texto("tNivelJuego", '"Nivel:"', 520, 92, cond=juego, color=COL_GRIS, size=1.1)
+        valores = [(str(k), f"  {k}  ") for k in range(1, len(niveles) + 1)] + [("0", " Todos ")]
+        filas = [("Ini", inicio, 380, 520, 70, 2.0), ("Jue", juego, 575, 68, 42, 1.1)]
+        for fila, cond, x0, y, paso_x, tam in filas:
+            for i, (v, cap) in enumerate(valores):
+                x = x0 + i * paso_x
+                for est, igual, color in [("si", "≟", (235, 130, 0)), ("no", "≠", (150, 160, 180))]:
+                    c.boton(f"bNivel{v}{fila}_{est}", cap, x, y, f"SetValue(nivelSel, {v})",
+                            cond=f"{cond} ∧ nivelSel {igual} {v}", bg=color, size=tam)
 
     # --- reto ---
     c.texto("tTema", "Element(tema, reto)", 30, 88, cond=juego, color=COL_GRIS, size=1.1)
-    c.texto("tRonda", '"Reto " + ronda + "   (quedan " + Length(pend) + " sin salir)"', 520, 50,
+    quedan = "Length(candNivel)" if niveles else "Length(pend)"
+    c.texto("tRonda", f'"Reto " + ronda + "   (quedan " + {quedan} + " sin salir)"', 520, 50,
             cond=juego, color=COL_GRIS, size=1.1)
     c.texto("tPregunta", "Element(pregunta, reto)", 30, 135, cond=juego, size=1.5, bold=True)
     # Con Element(...) a secas GeoGebra no aplica LaTeX; concatenado con "" sí.
@@ -608,15 +1008,19 @@ def construir_xml(titulo, retos, semilla):
         c.texto(f"op{L}_mal{suf}", exp, x, y, size=tam, latex=True, bg=COL_MAL_BG, color=COL_MAL,
                 cond=f"reto > 0 ∧ {cond_disp} ∧ resp ≟ {k} ∧ solActual ≠ {k}")
 
-    c.texto("tBien", '"¡CORRECTO!  El Grupo " + turno + " sigue en juego."', 30, 568,
+    # Si ningún reto usa una columna, sobra sitio debajo de las opciones para una resolución más larga.
+    todas_cortas = "1" not in largos
+    y_fb, y_expl, tam_expl = (505, 525, 1.4) if todas_cortas else (568, 588, 1.5)
+    c.texto("tBien", '"¡CORRECTO!  El Grupo " + turno + " sigue en juego."', 30, y_fb,
             cond="reto > 0 ∧ resp > 0 ∧ resp ≟ solActual", color=COL_OK, size=1.6, bold=True)
-    c.texto("tMal", '"INCORRECTO.  El Grupo " + turno + " queda eliminado."', 30, 568,
+    c.texto("tMal", '"INCORRECTO.  El Grupo " + turno + " queda eliminado."', 30, y_fb,
             cond="reto > 0 ∧ resp > 0 ∧ resp ≠ solActual ∧ Element(elim, turno) ≟ 1",
             color=COL_MAL, size=1.6, bold=True)
-    c.texto("tMalSinElim", '"INCORRECTO."', 30, 568,
+    c.texto("tMalSinElim", '"INCORRECTO."', 30, y_fb,
             cond="reto > 0 ∧ resp > 0 ∧ resp ≠ solActual ∧ Element(elim, turno) ≟ 0",
             color=COL_MAL, size=1.6, bold=True)
-    c.texto("tExpl", '"" + Element(expl, reto)', 30, 588, cond="reto > 0 ∧ resp > 0", size=1.5, latex=True)
+    c.texto("tExpl", '"" + Element(expl, reto)', 30, y_expl, cond="reto > 0 ∧ resp > 0", size=tam_expl,
+            latex=True)
 
     c.texto("tCrono", '"Tiempo: " + restante + " s"', 1080, 50,
             cond="reto > 0 ∧ resp ≟ 0 ∧ segundos > 0 ∧ restante > 0", color=(0, 90, 0), size=1.5,
@@ -699,10 +1103,10 @@ def construir_xml(titulo, retos, semilla):
 """
 
 
-def guardar(nombre, titulo, retos, semilla):
+def guardar(nombre, titulo, retos, semilla, niveles=None):
     ruta = AQUI / nombre
     with zipfile.ZipFile(ruta, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("geogebra.xml", construir_xml(titulo, retos, semilla))
+        z.writestr("geogebra.xml", construir_xml(titulo, retos, semilla, niveles))
         z.writestr("geogebra_javascript.js", JS_CRONO)
     print(f"{ruta.name}: {len(retos)} retos")
 
@@ -710,3 +1114,6 @@ def guardar(nombre, titulo, retos, semilla):
 if __name__ == "__main__":
     guardar("juego_numeros_naturales_1eso.ggb", "NÚMEROS NATURALES · 1º ESO", NATURALES, 1)
     guardar("juego_potencias_1eso.ggb", "POTENCIAS · 1º ESO", POTENCIAS, 2)
+    guardar("juego_operaciones_niveles_1eso.ggb", "OPERACIONES · 1º ESO",
+            [r for _, retos in OPERACIONES for r in retos], 3,
+            niveles=[len(retos) for _, retos in OPERACIONES])

@@ -2,6 +2,12 @@
 
 - `juego_numeros_naturales_1eso.ggb` (41 retos): valor posicional, aproximación, propiedades, cálculo mental, división, jerarquía de operaciones, problemas y números romanos.
 - `juego_potencias_1eso.ggb` (44 retos): qué es una potencia, exponentes 0 y 1, cuadrados y cubos, potencias de 10, producto y cociente de potencias de la misma base, potencia de una potencia, potencias con el mismo exponente y errores con la suma y la resta. Solo se usan exponentes naturales, sin fracciones ni letras.
+- `juego_operaciones_niveles_1eso.ggb` (45 retos, pensado para Refuerzo): operaciones combinadas con números naturales, en 3 niveles de 15 retos:
+  - **Nivel 1:** cálculo mental (tablas, ×10, :10, sumar 99…) y dos operaciones sin paréntesis.
+  - **Nivel 2:** paréntesis, operaciones del mismo nivel de izquierda a derecha, potencias y raíces sencillas.
+  - **Nivel 3:** corchetes, llaves, potencias y raíces combinadas.
+
+  El nivel se elige al empezar y se puede cambiar en cualquier momento con los botones de arriba. Con **Todos** se mezclan los 45 retos. Al responder aparece la resolución paso a paso.
 
 ## Cómo se juega
 
@@ -15,10 +21,16 @@
 
 ## Editar los retos
 
-Los `.ggb` se generan con `generar_juegos.py`. Para cambiar o añadir retos, edita las listas `NATURALES` o `POTENCIAS` y ejecuta:
+Los `.ggb` se generan con `generar_juegos.py`. Para cambiar o añadir retos, edita las listas `NATURALES`, `POTENCIAS` u `OPERACIONES` y ejecuta:
 
 ```bash
 python3 generar_juegos.py
 ```
 
 La letra de la opción correcta se reparte a partes iguales entre A, B, C y D. Si alguna opción es larga, ese reto muestra las opciones en una sola columna.
+
+En `OPERACIONES` cada reto se escribe en texto sencillo, por ejemplo `oper("2+3*[10-(4+2)]", ["(2+3)*[10-(4+2)]", ...], tema)`:
+
+- **Símbolos:** `*` multiplicar, `/` dividir, `^` potencia, `( ) [ ] { }` agrupar y `r(...)` raíz cuadrada.
+- **Distractores:** se escriben como la expresión que haría un alumno al cometer el error típico, o directamente como número.
+- **Comprobaciones:** el script calcula la solución y los pasos, y avisa si una resta da negativo, si una división o una raíz no es exacta, o si un distractor coincide con la solución.

@@ -43,7 +43,7 @@ Cada `.ggb` deberia seguir esta plantilla:
 
 ## Estado actual
 
-- En `1eso/T1_numeros_naturales_y_potencias/` hay dos juegos (naturales y potencias) generados con `generar_juegos.py`. Incluyen marcador por grupos, turnos, pasapalabra (una vez por grupo), retos sin repetir y cronómetro.
+- En `1eso/T1_numeros_naturales_y_potencias/` hay tres juegos (naturales, potencias y operaciones combinadas en 3 niveles) generados con `generar_juegos.py`. Incluyen marcador por grupos, turnos, pasapalabra (una vez por grupo), retos sin repetir y cronómetro.
 - En `2eso/` hay juegos de rectas/geometria con opciones por ejercicio. Sirven como referencia, aunque necesitan mejorar la aleatoriedad al pasar de reto.
 - En `4eso/T7_y_T8_funciones/01_reconocer_por_la_grafica/` hay juegos de reconocimiento de funciones por la grafica. Son la referencia principal para la filosofia eliminatoria.
 
