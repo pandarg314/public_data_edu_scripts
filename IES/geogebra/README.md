@@ -8,6 +8,15 @@ La [guia de GeoGebra en Ubuntu 24.04](USO_UBUNTU_24.md) recoge la instalacion
 portable fuera del proyecto, el arranque, el atajo de pantalla completa y las
 pruebas de los juegos y temporizadores sin internet.
 
+La [version 2 de numeros naturales](1eso/T1_numeros_naturales_y_potencias/README_naturales_v2.md)
+incorpora comodines, puntos, revivir y pausa. Su [TODO](TODO.md) distingue lo
+implementado y probado automaticamente de las pruebas pendientes en la pizarra.
+
+La [version 3 de naturales](1eso/T1_numeros_naturales_y_potencias/README_naturales_v3.md)
+parte de esa version y anade avisos de tiempo, cruces de consumo y descarte,
+copas y cartel de ganadores por puntos. Su guia registra todas las reglas como
+referencia para actualizar los otros juegos mas adelante, no en este cambio.
+
 ## Contexto de aula
 
 - La clase trabaja en grupos de 2 a 4 personas.

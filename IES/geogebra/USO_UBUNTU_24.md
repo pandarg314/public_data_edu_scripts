@@ -73,6 +73,8 @@ Volver a GeoGebra y pulsar **Super + F11**. Super es la tecla con el logo de
 Windows. La misma combinacion permite salir de pantalla completa. El ajuste
 se guarda para el usuario y no hay que repetir el comando en cada arranque.
 
+**El usuario confirmo que la pantalla completa funciona.**
+
 La alternativa grafica esta en **Configuracion > Teclado > Ver y personalizar
 atajos > Ventanas > Alternar el modo de pantalla completa**.
 
@@ -121,8 +123,10 @@ las instrucciones para regenerarlos estan en el
 
 ## Prueba pendiente antes de clase
 
-El arranque de GeoGebra esta confirmado. Todavia no se ha confirmado en la
-conversacion el funcionamiento del atajo ni de los temporizadores corregidos.
+El arranque de GeoGebra y el atajo de pantalla completa estan confirmados.
+Queda comprobar los juegos sin wifi y en la pizarra. El usuario ha senalado
+que agotar el tiempo debe eliminar al equipo: ese cambio y las nuevas reglas
+se recogen en el [TODO de la version 2](TODO.md), en un script y juego nuevos.
 
 1. Conectar el portatil a la pizarra digital y activar la pantalla completa.
 2. Desconectar el wifi y abrir cada uno de los tres juegos locales.

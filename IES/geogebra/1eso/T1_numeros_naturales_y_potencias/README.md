@@ -1,5 +1,22 @@
 # 1 ESO · T1 Números naturales y potencias: juegos eliminatorios
 
+## Nueva versión de naturales
+
+`juego_numeros_naturales_1eso_v3.ggb` conserva las ayudas y añade reloj rojo en
+los últimos 10 segundos, cruces para ayudas gastadas y respuestas descartadas,
+copas y cartel final con victoria por puntos, incluidos empates. Está documentado
+en la [guía completa de la versión 3](README_naturales_v3.md). La versión 2 y los
+otros juegos se conservan; su actualización queda para una petición posterior.
+Los últimos ajustes de v3 incorporan **Siguiente ronda** durante toda la partida,
+**Fin de partida** con confirmación y un contador más grande dentro de un círculo.
+
+`juego_numeros_naturales_1eso_v2.ggb` añade tres comodines por equipo, puntos,
+oportunidad de revivir, eliminación por tiempo agotado y pausa con pantalla
+oculta. Se genera por separado con `generar_naturales_v2.py` y conserva los
+archivos anteriores. Consulta las [reglas y pruebas de la versión 2](README_naturales_v2.md).
+
+## Juegos originales
+
 - `juego_numeros_naturales_1eso.ggb` (41 retos): valor posicional, aproximación, propiedades, cálculo mental, división, jerarquía de operaciones, problemas y números romanos.
 - `juego_potencias_1eso.ggb` (44 retos): qué es una potencia, exponentes 0 y 1, cuadrados y cubos, potencias de 10, producto y cociente de potencias de la misma base, potencia de una potencia, potencias con el mismo exponente y errores con la suma y la resta. Solo se usan exponentes naturales, sin fracciones ni letras.
 - `juego_operaciones_niveles_1eso.ggb` (45 retos, pensado para Refuerzo): operaciones combinadas con números naturales, en 3 niveles de 15 retos:
