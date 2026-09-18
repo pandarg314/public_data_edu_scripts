@@ -1,5 +1,44 @@
 # TODO: numeros naturales
 
+## Zona segura para la pizarra, 18 de septiembre
+
+- [x] Registrar la incidencia: el control nativo de animacion inferior izquierdo
+  no se veia en la pizarra. La captura del portatil no confirma la causa.
+- [x] Distinguir ese control de la pausa propia del juego, situada arriba a la
+  derecha y encargada de ocultar la partida y congelar el reloj.
+- [x] Crear [PROTOCOLO_PIZARRA.md](PROTOCOLO_PIZARRA.md) con margen inicial del
+  5 % por lado, minimo 40 pixeles, diagnostico y comprobaciones de aula.
+- [x] Enlazar el protocolo desde las instrucciones de esta carpeta y las guias.
+- [ ] Confirmar si se recortan tambien el escritorio y otras aplicaciones;
+  registrar modelo, conexion, resolucion, escala y modo de pantalla del aula.
+- [ ] Incorporar la zona segura al diseno compartido de los tres juegos v3,
+  incluyendo las posiciones dinamicas, sin recortar el lado contrario ni
+  reducir la legibilidad; conservar las versiones anteriores.
+- [ ] Regenerar y verificar Naturales, Potencias y Operaciones, sus distintos
+  estados y resoluciones, segun el protocolo.
+- [ ] Confirmar en la pizarra fisica que los cuatro bordes y todos los controles
+  propios quedan visibles y accesibles.
+
+Este registro solo modifica documentacion. Los `.ggb` mantienen su interfaz
+actual; la causa del recorte y la adaptacion de margenes siguen pendientes.
+
+## Potencias y operaciones: version 3, 18 de septiembre
+
+- [x] Crear `juego_potencias_1eso_v3.ggb` con las 44 preguntas originales.
+- [x] Crear `juego_operaciones_niveles_1eso_v3.ggb` con 45 preguntas, 15 por nivel, y selector de niveles/Todos.
+- [x] Compartir las reglas e interfaz v3: ayudas, puntos, revivir, reloj circular, pausa, ronda manual y final con ganadores empatados.
+- [x] Mantener las preguntas de cada juego: la exclusion de potencias, raices y propiedades se limita al banco de Naturales.
+- [x] Conservar los `.ggb` originales y v2; comprobar tambien Naturales v3 al ampliar el motor compartido.
+- [x] Probar niveles, agotamiento y cambio de banco, rescates, recursos y textos matematicos; documentar y generar los nuevos archivos.
+- [ ] Comprobar visualmente los dos nuevos juegos en GeoGebra Portable y pizarra.
+
+Documentado en la [guia conjunta](1eso/T1_numeros_naturales_y_potencias/README_juegos_v3.md).
+Pruebas superadas: 22 Python y 182 JavaScript entre los tres bancos; tambien se
+han ejecutado los scripts incrustados con Rhino del Portable. Se han comprobado
+las dimensiones de todas las formulas de los dos bancos nuevos usando su
+renderizador LaTeX, sin abrir la ventana interactiva de GeoGebra. Naturales v3
+se regenera con el motor compartido; no cambia su banco ni su interfaz.
+
 ## Version 3: color y resultados
 
 ### Ultimos ajustes, 17 de septiembre
@@ -39,8 +78,8 @@ Fin de partida, aunque queden varios equipos activos.
 
 Generado `juego_numeros_naturales_1eso_v3.ggb`. La
 [guia completa de v3](1eso/T1_numeros_naturales_y_potencias/README_naturales_v3.md)
-recoge tambien la futura actualizacion de los demas juegos, sin ejecutarla.
-Verificados `py_compile`, `--dry-run`, 16 pruebas Python y 56 JavaScript, estas
+enlaza ahora con la adaptacion de Potencias y Operaciones realizada el 18 de septiembre.
+Verificados `py_compile`, `--dry-run`, 16 pruebas Python y 57 JavaScript, estas
 ultimas tambien con Rhino 1.8.1 del Portable y el JavaScript extraido del `.ggb`
 generado. Comprobados los hashes de v2 y de los tres juegos originales, los
 PNG incrustados y el contraste de los colores. La API simulada y las pruebas

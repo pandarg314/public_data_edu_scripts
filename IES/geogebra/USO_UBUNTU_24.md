@@ -96,6 +96,17 @@ las barras del escritorio. Es distinto de la pantalla completa.
 
 ## Juegos locales y correccion del temporizador
 
+Nota sobre proyeccion, 18 de septiembre: se ha observado un posible recorte
+de bordes en la pizarra. El [protocolo de pizarra](PROTOCOLO_PIZARRA.md) recoge
+como distinguir un problema de salida de video de uno del juego y define la
+zona segura pendiente de incorporar. En v3, usar la pausa propia situada arriba
+a la derecha para ocultar la partida; el pequeno boton inferior izquierdo es
+el control nativo de animacion de GeoGebra y no cumple esa funcion.
+
+El registro que sigue describe los juegos originales sin sufijo. Para las
+reglas y archivos actuales, consultar la
+[guia conjunta de v3](1eso/T1_numeros_naturales_y_potencias/README_juegos_v3.md).
+
 Desde **Archivo > Abre** se pueden seleccionar los juegos de
 [`1eso/T1_numeros_naturales_y_potencias/`](1eso/T1_numeros_naturales_y_potencias/),
 carpeta relativa a este documento:

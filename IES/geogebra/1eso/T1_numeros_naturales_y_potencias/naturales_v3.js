@@ -1,7 +1,9 @@
 /* Embedded by generar_naturales_v3.py. ES5 for GeoGebra Classic 5 / Rhino. */
-function NaturalesGame(bank, random) {
+function NaturalesGame(bank, random, levels) {
     this.bank = bank;
     this.random = random || Math.random;
+    this.levels = levels || [];
+    this.level = this.levels.length ? 1 : 0;
     this.settings = {groups: 5, seconds: 30, extra: 20};
     this.phase = "setup";
     this.paused = false;
@@ -57,12 +59,26 @@ NaturalesGame.prototype.start = function () {
     this.pending = [];
     this.draw();
 };
+NaturalesGame.prototype.candidates = function () {
+    var self = this;
+    return this.pending.filter(function (index) {
+        return !self.level || self.bank[index].level === self.level;
+    });
+};
 NaturalesGame.prototype.draw = function () {
     if (!this.pending.length) {
         for (var i = 0; i < this.bank.length; i++) this.pending.push(i);
     }
-    var pos = Math.floor(this.random() * this.pending.length);
-    this.question = this.pending.splice(pos, 1)[0];
+    var candidates = this.candidates();
+    if (!candidates.length) {
+        // Refill only the exhausted level; other levels retain their unseen questions.
+        for (var k = 0; k < this.bank.length; k++) {
+            if (!this.level || this.bank[k].level === this.level) this.pending.push(k);
+        }
+        candidates = this.candidates();
+    }
+    var selected = candidates[Math.floor(this.random() * candidates.length)];
+    this.question = this.pending.splice(this.pending.indexOf(selected), 1)[0];
     this.excluded = [];
     this.eligible = [];
     this.rescuer = -1;
@@ -188,6 +204,11 @@ NaturalesGame.prototype.dispatch = function (action, value) {
         this.confirmReset = true;
         return;
     }
+    if (action === "level" && this.phase !== "over") {
+        if (this.levels.length && typeof value === "number" && value % 1 === 0 &&
+                value >= 0 && value <= this.levels.length) this.level = value;
+        return;
+    }
     if (this.phase === "setup") {
         if (action === "start") this.start();
         if (action === "groups") this.settings.groups = Math.max(2, Math.min(8, this.settings.groups + value));
@@ -228,7 +249,7 @@ var NV3 = {
     game: null, api: null, busy: false, cache: {}, clockId: -1,
     mount: function (api) {
         this.api = api;
-        this.game = new NaturalesGame(NATURALES_BANK);
+        this.game = new NaturalesGame(NATURALES_BANK, null, NATURALES_LEVELS);
         this.cache = {};
         this.clockId = -1;
         this.busy = true;
@@ -303,6 +324,13 @@ var NV3 = {
                 show("finishYes"); show("finishNo");
             } else {
                 show("title");
+                if (g.levels.length && g.phase !== "over") {
+                    for (var level = 0; level <= g.levels.length; level++) {
+                        show("level" + level);
+                        this.background("level" + level, g.level === level ? p.teal : p.paper);
+                        this.color("level" + level, g.level === level ? p.paper : p.teal);
+                    }
+                }
                 if (g.phase === "setup") {
                     text("configGroups", "Equipos: " + g.settings.groups);
                     text("configTime", "Tiempo por reto: " + (g.settings.seconds ? g.settings.seconds + " s" : "sin l\u00edmite"));
@@ -333,7 +361,7 @@ var NV3 = {
                         this.set("setTextValue", "explanation", "");
                     } else {
                         show("next"); show("finishGame");
-                        text("round", "Reto " + g.round + "  |  " + g.pending.length + " pendientes");
+                        text("round", "Reto " + g.round + "  |  " + g.candidates().length + " pendientes");
                         var q = this.game.bank[g.question];
                         var reveal = g.phase === "closed";
                         text("topic", q.topic);

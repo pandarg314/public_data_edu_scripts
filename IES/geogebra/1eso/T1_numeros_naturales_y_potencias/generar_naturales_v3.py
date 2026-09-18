@@ -208,12 +208,12 @@ def explicacion_latex(value):
     return r"\begin{array}{l}" + r" \\ ".join(lines) + r"\end{array}"
 
 
-def banco():
+def banco(retos=RETOS_V3):
     rng = random.Random(1)
-    letters = [k % 4 for k in range(len(RETOS_V3))]
+    letters = [k % 4 for k in range(len(retos))]
     rng.shuffle(letters)
     result = []
-    for index, question in enumerate(RETOS_V3):
+    for index, question in enumerate(retos):
         options = list(question["malas"])
         if len(options) != 3 or len(set(options + [question["ok"]])) != 4:
             raise ValueError(f"Reto {index + 1}: opciones repetidas")
@@ -222,6 +222,8 @@ def banco():
         result.append(dict(topic=question["tema"], question="\n".join(textwrap.wrap(question["pregunta"], 63)),
                            expression=question["expr"], options=options, correct=letters[index],
                            explanation=explicacion_latex(question["expl"])))
+        if "nivel" in question:
+            result[-1]["level"] = question["nivel"]
     return result
 
 
@@ -303,12 +305,12 @@ class Pantalla:
         ET.SubElement(element, "interpolate", val="true")
 
 
-def construir():
+def construir(retos=RETOS_V3, titulo=None, niveles=(), expression_y=182):
     # Reutilizar la configuracion XML del generador previo sin ejecutar su main.
-    root = ET.fromstring(construir_xml("Numeros naturales - version 3", RETOS_V3, 1))
+    root = ET.fromstring(construir_xml(titulo or "Numeros naturales - version 3", retos, 1))
     construction = root.find("construction")
     construction.clear()
-    construction.set("title", "Numeros naturales - 1 ESO - v3")
+    construction.set("title", titulo + " - v3" if titulo else "Numeros naturales - 1 ESO - v3")
     root.find("gui/window").attrib.update(width="1180", height="690")
     root.find("euclidianView/size").attrib.update(width="1180", height="650")
     root.find("euclidianView/bgColor").attrib.update(r="250", g="251", b="252")
@@ -324,7 +326,15 @@ def construir():
                   width="100", x="0", y="0", fixed="true", horizontal="true")
     ET.SubElement(clock, "animation", step="0.05", speed="10 / 600", type="3", playing="false")
     screen = Pantalla(construction)
-    screen.text("title", 28, 40, "N\u00daMEROS NATURALES  |  1 ESO", 1.35, bold=True)
+    screen.text("title", 28, 40, titulo or "N\u00daMEROS NATURALES  |  1 ESO", 1.35, bold=True)
+    if niveles:
+        choices = list(enumerate(niveles, 1)) + [(0, "Todos")]
+        for slot, (index, caption) in enumerate(choices):
+            screen.button("level" + str(index), caption, 710 + 82 * slot,
+                          8, f'NV3.dispatch("level", {index});', width=80)
+            element = construction.find(f"element[@label='level{index}']")
+            element.find("dimensions").set("height", "32")
+            element.find("font").set("sizeM", ".9")
     screen.text("configGroups", 55, 170, size=1.5)
     screen.text("configTime", 55, 250, size=1.5)
     screen.text("configExtra", 55, 330, size=1.5)
@@ -344,10 +354,10 @@ def construir():
     screen.text("finishQuestion", 270, 270, "\u00bfTerminamos con los puntos actuales?", size=1.1)
     screen.button("finishYes", "Finalizar", 345, 310, 'NV3.dispatch("finish");')
     screen.button("finishNo", "Continuar", 555, 310, 'NV3.dispatch("cancelFinish");')
-    screen.text("round", 510, 38, size=0.95)
+    screen.text("round", 470 if niveles else 510, 38, size=0.9 if niveles else 0.95)
     screen.text("topic", 28, 80, size=1.05)
     screen.text("question", 28, 125, size=1.3, bold=True)
-    screen.text("expression", 40, 182, size=2, latex=True)
+    screen.text("expression", 40, expression_y, size=2, latex=True)
     for option in range(4):
         screen.text("answer" + str(option), 40, 225 + option * 48, size=1.6, latex=True,
                     action=f'NV3.dispatch("answer", {option});')
@@ -395,8 +405,9 @@ def construir():
             screen.help_icon(f"team{team}_{kind}", kind, 851 + 33 * i, y + 9, tooltip, size=18)
         screen.icon("choose" + str(team), "plus", 1095, y - 13,
                     f"Dar el intento al Grupo {team + 1}", f'NV3.dispatch("rescue", {team});')
-    js = ("var NATURALES_BANK = " + json.dumps(banco(), ensure_ascii=True, separators=(",", ":")) + ";\n"
+    js = ("var NATURALES_BANK = " + json.dumps(banco(retos), ensure_ascii=True, separators=(",", ":")) + ";\n"
           + "var NATURALES_COLORS = " + json.dumps(PALETA) + ";\n"
+          + "var NATURALES_LEVELS = " + json.dumps(list(niveles)) + ";\n"
           + "var NATURALES_UI = " + json.dumps(screen.labels) + ";\n" + REGLAS.read_text(encoding="utf-8"))
     ET.indent(root, space="\t")
     contents = {"geogebra.xml": ET.tostring(root, encoding="utf-8", xml_declaration=True),
@@ -405,8 +416,9 @@ def construir():
     return contents
 
 
-def guardar(path=SALIDA):
-    contents = construir()
+def guardar(path=SALIDA, contents=None):
+    if contents is None:
+        contents = construir()
     # Marcas de tiempo estables para que regenerar sin cambios de fuentes sea reproducible.
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as archive:
         for name, data in contents.items():

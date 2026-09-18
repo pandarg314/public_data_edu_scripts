@@ -8,14 +8,20 @@ La [guia de GeoGebra en Ubuntu 24.04](USO_UBUNTU_24.md) recoge la instalacion
 portable fuera del proyecto, el arranque, el atajo de pantalla completa y las
 pruebas de los juegos y temporizadores sin internet.
 
+El [protocolo de pizarra](PROTOCOLO_PIZARRA.md) fija criterios comunes de
+margenes de seguridad, legibilidad y comprobacion real en el aula. Consultarlo
+antes de modificar interfaces. Su aplicacion a los juegos v3 esta pendiente;
+documentar un criterio no significa que los archivos ya lo incorporen.
+
 La [version 2 de numeros naturales](1eso/T1_numeros_naturales_y_potencias/README_naturales_v2.md)
 incorpora comodines, puntos, revivir y pausa. Su [TODO](TODO.md) distingue lo
 implementado y probado automaticamente de las pruebas pendientes en la pizarra.
 
 La [version 3 de naturales](1eso/T1_numeros_naturales_y_potencias/README_naturales_v3.md)
 parte de esa version y anade avisos de tiempo, cruces de consumo y descarte,
-copas y cartel de ganadores por puntos. Su guia registra todas las reglas como
-referencia para actualizar los otros juegos mas adelante, no en este cambio.
+copas y cartel de ganadores por puntos. Desde el 18 de septiembre, tambien hay
+[versiones 3 de Potencias y Operaciones por niveles](1eso/T1_numeros_naturales_y_potencias/README_juegos_v3.md),
+con los mismos controles y sus bancos originales. Se conservan los archivos anteriores.
 
 ## Contexto de aula
 

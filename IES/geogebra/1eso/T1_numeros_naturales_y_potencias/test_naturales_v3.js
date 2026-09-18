@@ -493,5 +493,119 @@
         NV3.dispatch("skip"); assert(!NV3.game.teams[0].alive); equal(NV3.game.turn, 1);
         equal(NV3.game.phase, "active"); equal(NV3.game.elapsed, 0);
     });
+    if (NATURALES_LEVELS.length) {
+        function leveled(level) {
+            var g = new NaturalesGame(NATURALES_BANK, function () { return 0; }, NATURALES_LEVELS);
+            g.settings.seconds = 0;
+            if (level !== undefined) g.dispatch("level", level);
+            g.dispatch("start");
+            return g;
+        }
+        test("each level draws fifteen distinct questions before refilling", function () {
+            [1, 2, 3].forEach(function (level) {
+                var g = leveled(level), seen = {};
+                for (var i = 0; i < 15; i++) {
+                    equal(g.bank[g.question].level, level); assert(!seen[g.question]);
+                    seen[g.question] = true; g.dispatch("skip");
+                }
+                equal(Object.keys(seen).length, 15); equal(g.candidates().length, 14);
+                equal(g.bank[g.question].level, level); equal(g.pending.length, 44);
+                equal(g.pending.length, Object.keys(g.pending.reduce(function (set, k) { set[k] = true; return set; }, {})).length);
+            });
+        });
+        test("All mixes all forty-five questions without repeats", function () {
+            var g = leveled(0), seen = {}, levels = {};
+            for (var i = 0; i < 45; i++) {
+                assert(!seen[g.question]); seen[g.question] = true;
+                levels[g.bank[g.question].level] = true; g.dispatch("skip");
+            }
+            equal(Object.keys(seen).length, 45); equal(Object.keys(levels).length, 3);
+            equal(g.pending.length, 44); equal(g.candidates().length, 44);
+        });
+        test("changing levels only affects the next question", function () {
+            var g = leveled(); g.settings.seconds = 30; g.limit = 30;
+            g.help("remove"); g.tick(7); var before = JSON.stringify(g);
+            g.dispatch("level", 3); var snapshot = JSON.parse(before); snapshot.level = 3;
+            equal(g, snapshot); equal(g.bank[g.question].level, 1);
+            g.dispatch("skip"); equal(g.bank[g.question].level, 3); equal(g.elapsed, 0);
+            equal(g.turn, 1); assert(!g.teams[0].remove && g.teams[0].pass);
+        });
+        test("switching away and back retains unasked questions", function () {
+            var g = leveled(1), first = g.question;
+            g.dispatch("level", 2); g.dispatch("skip"); var second = g.question;
+            g.dispatch("level", 1); g.dispatch("skip");
+            assert(g.question !== first); assert(g.pending.indexOf(first) === -1);
+            assert(g.pending.indexOf(second) === -1); equal(g.pending.length, 42);
+            equal(g.candidates().length, 13);
+        });
+        test("refilling an exhausted level does not refill other levels", function () {
+            var g = leveled(2), used = g.question;
+            g.dispatch("level", 1);
+            for (var i = 0; i < 16; i++) g.dispatch("skip");
+            equal(g.bank[g.question].level, 1); equal(g.candidates().length, 14);
+            assert(g.pending.indexOf(used) === -1);
+            equal(g.pending.filter(function (i) { return g.bank[i].level === 2; }).length, 14);
+            equal(g.pending.filter(function (i) { return g.bank[i].level === 3; }).length, 15);
+            equal(g.pending.length, 43);
+        });
+        test("invalid and repeated selections cannot reset the question or clock", function () {
+            var g = leveled(2), before = JSON.stringify(g);
+            [2, -1, 4, 1.5, "1", null, undefined, NaN, Infinity].forEach(function (level) { g.dispatch("level", level); });
+            equal(JSON.stringify(g), before);
+        });
+        test("level selection cannot replace the failed question during revival", function () {
+            var g = leveled(1); g.answer(wrong(g)); g.dispatch("next");
+            g.help("remove"); g.answer(wrong(g)); equal(g.phase, "offer");
+            var question = g.question, excluded = g.excluded.slice(0);
+            g.dispatch("level", 3); g.dispatch("choose"); g.dispatch("level", 2); g.dispatch("rescue", 0);
+            equal(g.phase, "rescue"); equal(g.question, question); equal(g.excluded, excluded);
+            equal(g.bank[g.question].level, 1); g.answer(correct(g)); g.dispatch("skip");
+            equal(g.bank[g.question].level, 2); equal(g.teams[0].score, 1);
+        });
+        test("pause and both confirmations block level changes", function () {
+            var g = leveled(2); g.dispatch("pause"); g.dispatch("level", 3); equal(g.level, 2);
+            g.dispatch("pause"); g.dispatch("requestReset"); g.dispatch("level", 1); equal(g.level, 2);
+            g.dispatch("cancelReset"); g.dispatch("requestFinish"); g.dispatch("level", 0); equal(g.level, 2);
+            g.dispatch("cancelFinish"); g.dispatch("level", 3); equal(g.level, 3);
+        });
+        test("restart retains the chosen level and resets its question pool", function () {
+            var g = leveled(3); g.answer(correct(g)); g.dispatch("skip");
+            g.dispatch("requestReset"); g.dispatch("reset"); equal(g.level, 3); g.dispatch("start");
+            equal(g.bank[g.question].level, 3); equal(g.candidates().length, 14);
+            equal(g.pending.length, 44); equal(g.round, 1); equal(g.teams[0].score, 0);
+        });
+        test("setup highlights level one and selected level matches the first question", function () {
+            var api = fakeAPI(); NV3.mount(api); equal(NV3.game.level, 1);
+            [0, 1, 2, 3].forEach(function (level) { assert(api.visible["level" + level]); });
+            equal(api.backgrounds.level1, "#2A5B64"); equal(api.colors.level1, NATURALES_COLORS.paper);
+            NV3.dispatch("level", 3); equal(api.backgrounds.level3, "#2A5B64");
+            equal(api.backgrounds.level1, "#FAFBFC"); NV3.dispatch("start");
+            equal(NV3.game.bank[NV3.game.question].level, 3);
+        });
+        test("pending count follows selected level without changing the current question", function () {
+            var api = fakeAPI(); NV3.mount(api); NV3.dispatch("start"); api.setValue("reloj", 12);
+            var q = NV3.game.question; assert(api.strings.round.indexOf("14 pendientes") !== -1);
+            NV3.dispatch("level", 2); equal(NV3.game.question, q); equal(NV3.game.elapsed, 12);
+            assert(api.strings.round.indexOf("15 pendientes") !== -1);
+            NV3.dispatch("skip"); equal(NV3.game.bank[NV3.game.question].level, 2);
+            assert(api.strings.round.indexOf("14 pendientes") !== -1); equal(api.getValue("reloj"), 0);
+        });
+        test("level selector is hidden throughout pause, confirmations and results", function () {
+            var api = fakeAPI(); NV3.mount(api); NV3.dispatch("start");
+            function hidden() { [0, 1, 2, 3].forEach(function (level) { assert(!api.visible["level" + level]); }); }
+            NV3.dispatch("pause"); hidden();
+            equal(NATURALES_UI.filter(function (n) { return api.visible[n]; }), ["resume"]);
+            NV3.dispatch("pause"); assert(api.visible.level1);
+            NV3.dispatch("requestReset"); hidden(); NV3.dispatch("cancelReset");
+            NV3.dispatch("requestFinish"); hidden(); NV3.dispatch("finish"); hidden();
+            var level = NV3.game.level; NV3.dispatch("level", 3); equal(NV3.game.level, level);
+        });
+    } else {
+        test("games without levels ignore level actions and do not add selectors", function () {
+            var api = fakeAPI(); NV3.mount(api); NV3.dispatch("start"); var before = JSON.stringify(NV3.game);
+            NV3.dispatch("level", 1); equal(JSON.stringify(NV3.game), before);
+            equal(NATURALES_UI.filter(function (n) { return /^level[0-9]+$/.test(n); }), []);
+        });
+    }
     print("PASS: " + count + " tests");
 })();

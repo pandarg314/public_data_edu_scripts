@@ -1,12 +1,22 @@
 # 1 ESO · T1 Números naturales y potencias: juegos eliminatorios
 
-## Nueva versión de naturales
+## Versiones 3
+
+Los tres juegos tienen ya versión 3, con las mismas reglas, comodines, pausa,
+reloj y cartel final. Los archivos nuevos son:
+
+- [Naturales v3](juego_numeros_naturales_1eso_v3.ggb): 41 preguntas.
+- [Potencias v3](juego_potencias_1eso_v3.ggb): las 44 preguntas originales.
+- [Operaciones por niveles v3](juego_operaciones_niveles_1eso_v3.ggb): las 45 preguntas originales, con niveles 1/2/3 y Todos.
+
+La [guía de los tres juegos v3](README_juegos_v3.md) documenta sus funciones,
+la selección de niveles y cómo regenerar los archivos con Python.
 
 `juego_numeros_naturales_1eso_v3.ggb` conserva las ayudas y añade reloj rojo en
 los últimos 10 segundos, cruces para ayudas gastadas y respuestas descartadas,
 copas y cartel final con victoria por puntos, incluidos empates. Está documentado
-en la [guía completa de la versión 3](README_naturales_v3.md). La versión 2 y los
-otros juegos se conservan; su actualización queda para una petición posterior.
+en la [guía completa de Naturales v3](README_naturales_v3.md). La versión 2 y los
+archivos originales sin sufijo se conservan intactos.
 Los últimos ajustes de v3 incorporan **Siguiente ronda** durante toda la partida,
 **Fin de partida** con confirmación y un contador más grande dentro de un círculo.
 

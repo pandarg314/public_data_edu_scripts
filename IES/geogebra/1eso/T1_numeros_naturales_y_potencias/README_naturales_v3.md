@@ -5,9 +5,9 @@ con GeoGebra Classic 5 Portable. Esta version parte de una copia de v2 y mantien
 41 preguntas, sin numeros romanos ni preguntas sobre propiedades. Incluye todos los scripts, iconos y el
 cartel final dentro del archivo: no necesita internet durante la partida.
 
-La version 2 y los otros juegos no se han modificado. Esta guia deja registrada
-la referencia para una futura actualizacion de los demas GeoGebras, que **no se
-realiza todavia**.
+La version 2 y los juegos originales no se han modificado. Desde el 18 de
+septiembre existen tambien [copias v3 de Potencias y Operaciones](README_juegos_v3.md).
+Los tres usan este motor comun; Naturales conserva sus preguntas y sus reglas.
 
 ## Ultimos ajustes: 17 de septiembre
 
@@ -197,12 +197,12 @@ desarrollo, o con Rhino. No es una dependencia para generar o jugar:
 python3 IES/geogebra/1eso/T1_numeros_naturales_y_potencias/test_naturales_v3.py --javascript | node
 ```
 
-Se comprueban 16 casos de Python y 56 de JavaScript: banco sin propiedades,
+Se comprueban 16 casos de Python y 57 de JavaScript: banco sin propiedades,
 potencias ni raices, nuevas soluciones y pasos de calculo, reloj,
 comodines, respuestas, turnos, rescates, pausa, reinicio, empates, cartel, PNG,
 contraste, capas, posiciones, generacion reproducible y conservacion de v2 y de
 los juegos originales, salto manual, fin anticipado, cancelacion y visibilidad
-de los nuevos controles. Las 56 pruebas JavaScript han pasado tambien con Rhino
+de los nuevos controles. Las 57 pruebas JavaScript han pasado tambien con Rhino
 1.8.1 del Portable y el codigo extraido del `.ggb` generado. La API simulada no
 equivale a dibujar la ventana real.
 
@@ -210,9 +210,10 @@ Pendiente de comprobar en Portable y pizarra: apariencia de esta version con
 2 y 8 equipos, reloj circular, cruces, nuevos botones y cartel final, tambien con wifi apagado.
 El [TODO](../../TODO.md) separa lo verificado automaticamente de esa comprobacion.
 
-## Siguiente fase
+## Adaptacion a los otros juegos
 
-Cuando se solicite, aplicar esta version a los demas GeoGebras mediante nuevas
-copias, conservando sus bancos y particularidades, como los niveles de operaciones.
-No ejecutar ahora `generar_juegos.py` ni sustituir los otros `.ggb`. Antes de
-extenderla, confirmar en el aula esta interfaz y el criterio de victoria por puntos.
+Realizada el 18 de septiembre en nuevas copias de Potencias y Operaciones,
+conservando sus bancos y los niveles. Naturales v3 se ha regenerado con el motor
+compartido; sus preguntas, interfaz y reglas siguen iguales. La
+[guia conjunta](README_juegos_v3.md) explica como generar los otros dos archivos
+sin ejecutar `generar_juegos.py` ni sustituir los `.ggb` originales.
